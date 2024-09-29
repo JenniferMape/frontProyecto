@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
+import isAuthenticatedGuard from '@/modules/auth/guards/is-admin.guard';
 import NotFound404 from '@/modules/common/pages/NotFound404.vue';
 import HomePage from '@/modules/landing/pages/HomePage.vue';
 import LandingLayout from '@/modules/landing/layouts/LandingLayout.vue';
@@ -22,19 +22,16 @@ const router = createRouter({
           path: 'features',
           name: 'features',
           component: () => import('@/modules/landing/pages/FeaturesPages.vue'),
-          beforeEnter: [isAuthenticatedGuard],
         },
         {
           path: 'pricing',
           name: 'pricing',
           component: () => import('@/modules/landing/pages/PricingPage.vue'),
-          beforeEnter: [isAuthenticatedGuard],
         },
         {
           path: 'contact',
           name: 'contact',
           component: () => import('@/modules/landing/pages/ContactPage.vue'),
-          beforeEnter: [isAuthenticatedGuard],
         },
         // {
         //   path: 'pokemon/:id',

@@ -10,7 +10,6 @@ import router from './router';
 const app = createApp(App);
 
 const options = {
-  // Puedes añadir más opciones si quieres
   position: 'top-right',
   timeout: 3000,
   closeOnClick: true,

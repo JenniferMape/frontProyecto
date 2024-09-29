@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/modules/authw/stores/auth.store';
+import { useAuthStore } from '@/modules/auth/stores/auth.store';
 import { RouterView } from 'vue-router';
 import { useRoute, useRouter } from 'vue-router';
-import { AuthStatus } from '@/modules/authw/interfaces/auth-status.enum';
+import { AuthStatus } from '@/modules/auth/interfaces/auth-status.enum';
 import FullScreenLoader from './modules/common/components/FullScreenLoader.vue';
 const authStore = useAuthStore();
 

@@ -101,7 +101,6 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     token,
-    register,
     authStatus,
 
     // Getters
@@ -114,5 +113,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     checkAuthStatus,
+    register,
   };
 });

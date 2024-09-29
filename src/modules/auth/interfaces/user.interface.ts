@@ -1,7 +1,7 @@
 export interface User {
-  id: string;
-  email: string;
-  fullName: string;
-  isActive: boolean;
-  roles: string[];
+  name_user: string;
+  email_user: string;
+  password_user: string;
+  type_user: 'COMPANY' | 'CLIENT' | 'ADMIN';
+  cif_user: string | null;
 }

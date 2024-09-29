@@ -6,24 +6,22 @@
       <h1 class="text-lg">CholloCuenca</h1>
     </div>
 
-    <!-- Título -->
-
     <!-- Formulario de Inicio de Sesión -->
-    <div class="card bg-base-100 w-full shadow-2xl">
+    <div class="card bg-base-90 w-full shadow-2xl">
       <form class="card-body p-6 grid grid-cols-1 gap-4" @submit.prevent="onLogin">
         <h2 class="card-title text-lg mb-2 col-span-full">Si ya eres usuario:</h2>
         <div class="form-control col-span-full">
           <label class="input input-bordered flex items-center gap-2">
             Email
             <input
-              v-model="email"
+              v-model="emailuser"
               type="email"
               placeholder="ejemplo@ejemplo.com"
               class="grow"
               required
               id="emailuser"
               name="emailuser"
-              autocomplete="off"
+              autocomplete="on"
             />
           </label>
         </div>
@@ -64,7 +62,8 @@
 
 <script setup lang="ts">
 import { useLoginForm } from '@/modules/auth/composables/useLoginForm';
+import { RouterLink } from 'vue-router';
 
 // // Desestructuramos las variables y funciones del composable
-const { email, password, rememberMe, onLogin, loading } = useLoginForm();
+const { emailuser, password, onLogin, loading } = useLoginForm();
 </script>
