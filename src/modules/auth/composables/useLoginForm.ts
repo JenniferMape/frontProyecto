@@ -1,38 +1,37 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { AuthResponse } from '../interfaces';
-import { tesloApi } from '@/api/tesloApi';
 import { useToast } from 'vue-toastification';
+import { useAuthStore } from './useAuthAction';
 
 export function useLoginForm() {
   const emailuser = ref('');
-  const password = ref('');
+  const passworduser = ref('');
   const rememberMe = ref(false);
   const errorMessage = ref<string | null>(null);
   const loading = ref(false);
   const router = useRouter();
   const toast = useToast();
+  const authStore = useAuthStore();
 
   const onLogin = async (): Promise<void> => {
-    if (!emailuser.value || !password.value) {
+    if (!emailuser.value || !passworduser.value) {
       errorMessage.value = 'Por favor ingrese el nombre de usuario y la contraseña.';
       toast.error(errorMessage.value);
       return;
     }
 
+    const email = emailuser.value;
+    const password = passworduser.value;
     loading.value = true;
     errorMessage.value = null;
 
     try {
-      const response = await tesloApi.post<AuthResponse>('/register/login', {
-        email_user: emailuser.value,
-        password_user: password.value,
-      });
+      const ok = await authStore.login(email, password);
 
-      const data = response.data;
-      localStorage.setItem('authToken', data.result.token);
-      toast.success('Inicio de sesión exitoso');
-      router.push({ name: 'home' });
+      if (ok) {
+        toast.success('Inicio de sesión exitoso');
+        router.push({ name: 'home' });
+      }
     } catch (error: any) {
       if (error.response) {
         errorMessage.value = error.response.data.message || 'Error en el inicio de sesión.';
@@ -48,7 +47,7 @@ export function useLoginForm() {
 
   return {
     emailuser,
-    password,
+    passworduser,
     rememberMe,
     errorMessage,
     loading,
