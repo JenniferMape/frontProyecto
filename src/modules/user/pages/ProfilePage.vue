@@ -16,11 +16,11 @@
 
     <!-- Profile Form -->
     <section class="w-3/4 bg-white shadow-md p-6 rounded-lg ml-6">
-      <h2 class="font-bold text-xl mb-6">Perfi.l</h2>
+      <h2 class="font-bold text-xl mb-6">Perfil</h2>
       <div class="flex items-center space-x-6">
         <div class="avatar">
           <div class="w-24 h-24 rounded-full">
-            <img :src="userAvatar" alt="Tu avatar" />
+            <img :src="authStore.user?.avatar_user || defaultAvatar" alt="Tu avatar" />
           </div>
         </div>
         <div>
@@ -78,10 +78,10 @@
 </template>
 
 <script setup>
-const userName = 'Juan';
-const userAvatar = 'https://placeimg.com/192/192/people'; // Avatar temporal, reemplázalo con la imagen dinámica del usuario.
+import { useAuthStore } from '@/modules/auth/stores/auth.store';
+import defaultAvatar from '@/assets/usuario.png';
+
+const authStore = useAuthStore();
 </script>
 
-<style scoped>
-/* Puedes agregar estilos adicionales si es necesario */
-</style>
+<style scoped></style>
