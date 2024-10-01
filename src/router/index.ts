@@ -83,24 +83,24 @@ const router = createRouter({
         },
       ],
     },
-    // // User
-    // {
-    //   path: '/user',
-    //   name: 'user',
-    //   component: () => import('@/modules/user/layouts/UserLayout.vue'),
-    //   children: [
-    //     {
-    //       path: 'profile',
-    //       name: 'profile',
-    //       component: () => import('@/modules/user/pages/ProfilePage.vue'),
-    //     },
-    //     {
-    //       path: 'register',
-    //       name: 'register',
-    //       component: () => import('@/modules/auth/pages/RegisterPage.vue'),
-    //     },
-    //   ],
-    // },
+    // User
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import('@/modules/user/layouts/UserLayout.vue'),
+      children: [
+        {
+          path: 'profile',
+          name: 'profile',
+          component: () => import('@/modules/user/pages/ProfilePage.vue'),
+        },
+        {
+          path: 'register',
+          name: 'register',
+          component: () => import('@/modules/auth/pages/RegisterPage.vue'),
+        },
+      ],
+    },
 
     // Not found
     {

@@ -8,28 +8,30 @@ export default {
     themes: [
       {
         lightTheme: {
-          primary: '#8CBA51', // Verde brillante como color principal
-          secondary: '#424242', // Gris oscuro para detalles secundarios
-          accent: '#779b33', // Mismo verde para acento
-          neutral: '#424242', // Fondo claro
-          'base-100': '#EDEDED', // Fondo principal blanco
-          info: '#48CFCB', // Turquesa claro para información
-          success: '#779b33', // Verde para éxito
-          warning: '#FBBF24', // Amarillo suave para advertencias
-          error: '#EF4444', // Rojo para errores
+          primary: '#8CBA51',
+          secondary: '#424242',
+          accent: '#779b33',
+          neutral: '#424242',
+          'base-100': '#EDEDED',
+          info: '#48CFCB',
+          success: '#779b33',
+          warning: '#FBBF24',
+          error: '#EF4444',
+          highlight: '#FFD700', // Asegúrate de que esté aquí
         },
       },
       {
         darkTheme: {
-          primary: '#8CBA51', // Verde brillante, se mantiene como color principal
-          secondary: '#F5F5F5', // Blanco o gris muy claro para detalles secundarios
-          accent: '#DEFF8B', // Mismo verde brillante
-          neutral: '#1c1c1c', // Fondo oscuro
-          'base-100': '#121212', // Fondo principal negro suave
-          info: '#48CFCB', // Turquesa claro para información
-          success: '#779b33', // Verde para éxito
-          warning: '#FBBF24', // Amarillo oscuro
-          error: '#EF4444', // Rojo para errores
+          primary: '#8CBA51',
+          secondary: '#F5F5F5',
+          accent: '#DEFF8B',
+          neutral: '#1c1c1c',
+          'base-100': '#121212',
+          info: '#48CFCB',
+          success: '#779b33',
+          warning: '#FBBF24',
+          error: '#EF4444',
+          highlight: '#FF4500', // Asegúrate de que esté aquí
         },
       },
     ],
