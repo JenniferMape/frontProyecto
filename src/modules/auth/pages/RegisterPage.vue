@@ -2,12 +2,12 @@
   <!-- Formulario de Registro -->
   <div class="card bg-base-100 w-full shadow-2xl">
     <form class="card-body p-6 grid grid-cols-1 gap-4" @submit.prevent="registerUser">
-      <h2 class="card-title text-lg mb-2 col-span-full text-white">¡Te estábamos esperando!</h2>
+      <h2 class="card-title text-lg mb-2 col-span-full text-neutral">¡Te estábamos esperando!</h2>
 
       <!-- Checkbox para seleccionar cuenta de empresa -->
       <div class="form-control col-span-full">
         <label class="label cursor-pointer">
-          <span class="label-text text-white">¿Va a ser una cuenta de empresa?</span>
+          <span class="label-text text-neutral">¿Va a ser una cuenta de empresa?</span>
           <input
             type="checkbox"
             id="typeUser"
@@ -18,7 +18,7 @@
       </div>
 
       <div class="form-control col-span-full" v-if="typeUser">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           CIF
           <input type="text" id="cif" v-model="cif" placeholder="A123456" autocomplete="off" />
         </label>
@@ -26,7 +26,7 @@
 
       <!-- Username Input -->
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Nombre de usuario
           <input
             type="text"
@@ -39,7 +39,7 @@
       </div>
 
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Email
           <input type="email" id="email" v-model="email" placeholder="Email" autocomplete="off" />
         </label>
@@ -47,7 +47,7 @@
 
       <!-- Password Input -->
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Contraseña
           <input
             type="password"
@@ -61,7 +61,7 @@
 
       <!-- Confirm Password Input -->
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Confirma la contraseña
           <input
             type="password"

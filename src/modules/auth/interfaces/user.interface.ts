@@ -4,4 +4,5 @@ export interface User {
   password_user: string;
   type_user: 'COMPANY' | 'CLIENT' | 'ADMIN';
   cif_user: string | null;
+  avatar_user?: string;
 }

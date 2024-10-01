@@ -1,25 +1,24 @@
 <template>
-  <!-- Header -->
-  <header class="shadow"></header>
-  <NavBar />
-  <main class="container mx-auto p-4">
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" />
-      </keep-alive>
-    </router-view>
-  </main>
+  <div class="bg-base-200 min-h-screen">
+    <!-- Aplicar la clase aquí -->
+    <header class="shadow"></header>
+    <NavBar />
+    <main class="container mx-auto p-4">
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+    </main>
 
-  <footer
-    class="sticky bottom-0 p-4 text-center transition-opacity duration-300"
-    :class="{ 'opacity-100': showFooter, 'opacity-0': !showFooter }"
-  >
-    <p>&copy; 2024 CholloCuenca. Todos los derechos reservados.</p>
-  </footer>
+    <CustomFooter />
+  </div>
 </template>
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import NavBar from '../components/NavBar.vue';
+import CustomFooter from '../components/CustomFooter.vue';
 
 const showFooter = ref(false);
 

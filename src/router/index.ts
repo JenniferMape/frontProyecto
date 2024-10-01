@@ -17,7 +17,6 @@ const router = createRouter({
           name: 'home',
           component: HomePage,
         },
-        // Descomentar y configurar estas rutas según sea necesario
         {
           path: 'features',
           name: 'features',
@@ -32,6 +31,16 @@ const router = createRouter({
           path: 'contact',
           name: 'contact',
           component: () => import('@/modules/landing/pages/ContactPage.vue'),
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: () => import('@/modules/landing/pages/ContactPage.vue'),
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: () => import('@/modules/user/pages/ProfilePage.vue'),
         },
         // {
         //   path: 'pokemon/:id',
@@ -74,6 +83,25 @@ const router = createRouter({
         },
       ],
     },
+    // // User
+    // {
+    //   path: '/user',
+    //   name: 'user',
+    //   component: () => import('@/modules/user/layouts/UserLayout.vue'),
+    //   children: [
+    //     {
+    //       path: 'profile',
+    //       name: 'profile',
+    //       component: () => import('@/modules/user/pages/ProfilePage.vue'),
+    //     },
+    //     {
+    //       path: 'register',
+    //       name: 'register',
+    //       component: () => import('@/modules/auth/pages/RegisterPage.vue'),
+    //     },
+    //   ],
+    // },
+
     // Not found
     {
       path: '/:pathMatch(.*)*',

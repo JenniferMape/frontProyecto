@@ -2,9 +2,9 @@
   <!-- Formulario de Inicio de Sesión -->
   <div class="card bg-base-100 w-full shadow-2xl">
     <form class="card-body p-6 grid grid-cols-1 gap-4" @submit.prevent="onLogin">
-      <h2 class="card-title text-lg mb-2 col-span-full text-white">Si ya eres usuario:</h2>
+      <h2 class="card-title text-lg mb-2 col-span-full text-neutral">Si ya eres usuario:</h2>
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Email
           <input
             v-model="emailuser"
@@ -19,7 +19,7 @@
         </label>
       </div>
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-white">
+        <label class="input input-bordered flex items-center gap-2 text-neutral">
           Password
           <input
             v-model="passworduser"
