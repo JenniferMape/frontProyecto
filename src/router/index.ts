@@ -37,11 +37,6 @@ const router = createRouter({
           name: 'contact',
           component: () => import('@/modules/landing/pages/ContactPage.vue'),
         },
-        {
-          path: 'profile',
-          name: 'profile',
-          component: () => import('@/modules/user/pages/ProfilePage.vue'),
-        },
         // {
         //   path: 'pokemon/:id',
         //   name: 'pokemon',

@@ -12,8 +12,10 @@
       tabindex="0"
       class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
     >
-      <li><router-link to="user/profile">Perfil</router-link></li>
-      <li><a>Ajustes</a></li>
+      <li>
+        <router-link :to="{ name: 'profile' }">Perfil</router-link>
+      </li>
+      <!-- <li><a>Ajustes</a></li> -->
       <li @click="authStore.logout()"><a>Cerrar Sesión</a></li>
     </ul>
   </div>

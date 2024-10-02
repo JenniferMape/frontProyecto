@@ -1,52 +1,82 @@
 <template>
-  <!-- ProductCard => Product -->
-  <article
-    class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300"
-  >
-    <a href="#">
-      <div class="relative flex items-end overflow-hidden rounded-xl">
-        <img :src="product.images[0]" :alt="product.title" class="h-[250px] object-cover" />
+  <div class="flex bg-base-100 shadow-lg rounded-lg overflow-hidden mb-4 h-40">
+    <!-- Imagen del producto -->
+    <div class="w-1/3">
+      <img class="w-full h-full object-cover" :src="product.image" :alt="product.title" />
+    </div>
+
+    <!-- Contenido de la tarjeta -->
+    <div class="w-2/3 p-4 flex flex-col justify-between">
+      <!-- Sección del tiempo en la esquina superior derecha -->
+      <div class="flex justify-between">
+        <span class="text-sm text-gray-400 ml-auto">{{ product.time }}</span>
       </div>
 
-      <div class="mt-1 p-2">
-        <h2 class="text-slate-700">{{ product.title }}</h2>
-        <p class="mt-1 text-sm text-slate-400 capitalize">{{ product.gender }}</p>
+      <!-- Título del producto -->
+      <h2 class="text-md font-bold text-gray-900 line-clamp-1">{{ product.title }}</h2>
 
-        <div class="mt-3 flex items-end justify-between">
-          <p class="text-lg font-bold text-blue-500">${{ product.price }}</p>
-
-          <div
-            class="flex items-center space-x-1.5 rounded-lg bg-blue-500 px-4 py-1.5 text-white duration-100 hover:bg-blue-600"
+      <!-- Precio y tienda -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <!-- Precio -->
+          <span class="text-lg font-semibold text-primary">{{ product.price }}€</span>
+          <!-- Precio original tachado (opcional) -->
+          <span v-if="product.oldPrice" class="text-sm line-through text-gray-500"
+            >{{ product.oldPrice }}€</span
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="h-4 w-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-              />
-            </svg>
-
-            <button class="text-sm">Add to cart</button>
-          </div>
         </div>
       </div>
-    </a>
-  </article>
+
+      <!-- Descripción del producto -->
+      <p class="text-sm text-gray-600 line-clamp-2">{{ product.description }}</p>
+
+      <!-- Sección acciones -->
+      <div class="flex justify-between items-center mt-2">
+        <div class="flex items-center space-x-2">
+          <!-- Avatar del Vendedor -->
+          <img :src="product.storeAvatar" alt="avatar" class="w-8 h-8 rounded-full object-cover" />
+          <!-- Vendedor -->
+          <span class="text-xs text-orange-500">{{ product.store }}</span>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- Comentarios -->
+          <div class="flex items-center space-x-1">
+            <i class="far fa-comment-alt text-gray-500"></i>
+            <span class="text-sm">{{ product.comments }}</span>
+          </div>
+
+          <!-- Botón para ver la oferta -->
+          <button class="btn btn-warning btn-sm">Ir al chollo</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import type { Product } from '../interfaces/product.interface';
-
-interface Props {
-  product: Product;
-}
-
-defineProps<Props>();
+<script setup>
+const props = defineProps({
+  product: {
+    type: Object,
+    required: true,
+    default: () => ({
+      title: 'Título del producto',
+      description: 'Descripción corta del producto...',
+      price: '100.95',
+      oldPrice: '120.00',
+      store: 'Coolmod',
+      time: 'hace 32m',
+      image: 'https://via.placeholder.com/150',
+      userName: 'Tatsuya',
+      userAvatar: 'https://via.placeholder.com/50',
+      comments: 10,
+    }),
+  },
+});
 </script>
+
+<style scoped>
+.h-40 {
+  height: 10rem; /* Ajusta la altura */
+}
+</style>

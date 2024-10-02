@@ -10,7 +10,7 @@
         marginwidth="0"
         title="map"
         scrolling="no"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2943591.924244259!2d-73.88525541704686!3d43.90551977385466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4e0851d4f1c39%3A0x4e9f168a08e85480!2s24%20McRae%20Rd%2C%20Ajax%2C%20ON%20L1S%203W3%2C%20Canad%C3%A1!5e0!3m2!1ses!2ses!4v1722963824761!5m2!1ses!2ses"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1815.3321612191226!2d-2.1438488044532225!3d40.075130735433355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5d67599ff68f7f%3A0x51dc89bc62923f49!2sCIFP%20N%C2%BA%201!5e0!3m2!1ses!2ses!4v1727893751467!5m2!1ses!2ses"
         style=""
       ></iframe>
     </div>
@@ -18,12 +18,10 @@
       <div
         class="lg:w-1/3 md:w-1/2 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
       >
-        <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Feedback</h2>
-        <p class="leading-relaxed mb-5 text-gray-600">
-          Post-ironic portland shabby chic echo park, banjo fashion axe
-        </p>
+        <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Contáctanos</h2>
+        <p class="leading-relaxed mb-5 text-gray-600">¿Sobre qué asunto nos contactas?</p>
         <div class="relative mb-4">
-          <label for="email" class="leading-7 text-sm text-gray-600">Email</label>
+          <label for="email" class="leading-7 text-sm text-gray-600">Tu correo</label>
           <input
             type="email"
             id="email"
@@ -32,7 +30,7 @@
           />
         </div>
         <div class="relative mb-4">
-          <label for="message" class="leading-7 text-sm text-gray-600">Message</label>
+          <label for="message" class="leading-7 text-sm text-gray-600">Tu mensaje</label>
           <textarea
             id="message"
             name="message"
@@ -42,10 +40,10 @@
         <button
           class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
         >
-          Button
+          Enviar mensaje
         </button>
         <p class="text-xs text-gray-500 mt-3">
-          Chicharrones blog helvetica normcore iceland tousled brook viral artisan.
+          Recuerda que te estás poniendo en contacto con CholloCuenca y no con alguna tienda.
         </p>
       </div>
     </div>

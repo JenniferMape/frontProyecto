@@ -6,7 +6,7 @@
         <router-link
           v-for="item in navItems"
           :key="item.text"
-          :to="item.route.name"
+          :to="item.route"
           class="px-3 py-2 rounded-lg hover:bg-primary hover:text-white transition text-primary"
         >
           {{ item.text }}
@@ -18,13 +18,13 @@
 
 <script setup lang="ts">
 const navItems = [
-  { text: 'Ofertas Destacadas', route: { name: 'features' } },
-  { text: 'Moda', route: { name: 'pricing' } },
-  { text: 'Electrónica', route: { name: 'contact' } },
-  { text: 'Alimentación', route: { name: 'contact' } },
-  { text: 'Salud', route: { name: 'contact' } },
-  { text: 'Hogar', route: { name: 'contact' } },
-  { text: 'Ocio y cultura', route: { name: 'contact' } },
-  { text: 'Automoción', route: { name: 'contact' } },
+  { text: 'Ofertas Destacadas', route: { name: 'home' } },
+  { text: 'Moda', route: { name: 'home' } },
+  { text: 'Electrónica', route: { name: 'home' } },
+  { text: 'Alimentación', route: { name: 'home' } },
+  { text: 'Salud', route: { name: 'home' } },
+  { text: 'Hogar', route: { name: 'home' } },
+  { text: 'Ocio y cultura', route: { name: 'home' } },
+  { text: 'Automoción', route: { name: 'home' } },
 ];
 </script>
