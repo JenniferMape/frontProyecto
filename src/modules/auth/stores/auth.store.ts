@@ -97,6 +97,11 @@ export const useAuthStore = defineStore('auth', () => {
       return { ok: false, message: 'Error al verificar la autenticación.' };
     }
   };
+  const updateUser = (updatedFields: Partial<User>) => {
+    if (user.value) {
+      user.value = { ...user.value, ...updatedFields };
+    }
+  };
 
   return {
     user,
@@ -114,5 +119,6 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     checkAuthStatus,
     register,
+    updateUser,
   };
 });

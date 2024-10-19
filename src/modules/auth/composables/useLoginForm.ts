@@ -29,7 +29,6 @@ export function useLoginForm() {
       const ok = await authStore.login(email, password);
 
       if (ok) {
-        toast.success('Inicio de sesión exitoso');
         router.push({ name: 'home' });
       }
     } catch (error: any) {

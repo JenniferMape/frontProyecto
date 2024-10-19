@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import isAuthenticatedGuard from '@/modules/auth/guards/is-admin.guard';
+import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 import NotFound404 from '@/modules/common/pages/NotFound404.vue';
 import HomePage from '@/modules/landing/pages/HomePage.vue';
 import LandingLayout from '@/modules/landing/layouts/LandingLayout.vue';
@@ -16,21 +16,6 @@ const router = createRouter({
           path: '', // Dejar vacío para que coincida con la ruta '/'
           name: 'home',
           component: HomePage,
-        },
-        {
-          path: 'features',
-          name: 'features',
-          component: () => import('@/modules/landing/pages/FeaturesPages.vue'),
-        },
-        {
-          path: 'pricing',
-          name: 'pricing',
-          component: () => import('@/modules/landing/pages/PricingPage.vue'),
-        },
-        {
-          path: 'contact',
-          name: 'contact',
-          component: () => import('@/modules/landing/pages/ContactPage.vue'),
         },
         {
           path: 'contact',
@@ -75,6 +60,15 @@ const router = createRouter({
           path: 'register',
           name: 'register',
           component: () => import('@/modules/auth/pages/RegisterPage.vue'),
+          beforeEnter: (to, from, next) => {
+            const token = localStorage.getItem('token');
+
+            if (token) {
+              next({ name: 'home' }); // Redirige si está autenticado
+            } else {
+              next();
+            }
+          },
         },
       ],
     },
@@ -87,12 +81,8 @@ const router = createRouter({
         {
           path: 'profile',
           name: 'profile',
+          beforeEnter: [isAuthenticatedGuard],
           component: () => import('@/modules/user/pages/ProfilePage.vue'),
-        },
-        {
-          path: 'register',
-          name: 'register',
-          component: () => import('@/modules/auth/pages/RegisterPage.vue'),
         },
       ],
     },
