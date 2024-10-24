@@ -12,9 +12,16 @@
       tabindex="0"
       class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
     >
-      <li>
-        <router-link :to="{ name: 'profile' }">Perfil</router-link>
-      </li>
+      <template v-if="authStore.user?.type_user === 'CLIENT'">
+        <li>
+          <router-link :to="{ name: 'clientProfile' }">Perfil</router-link>
+        </li>
+      </template>
+      <template v-if="authStore.user?.type_user === 'COMPANY'">
+        <li>
+          <router-link :to="{ name: 'companyProfile' }">Perfil</router-link>
+        </li>
+      </template>
       <!-- <li><a>Ajustes</a></li> -->
       <li @click="authStore.logout()"><a>Cerrar Sesión</a></li>
     </ul>

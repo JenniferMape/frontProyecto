@@ -18,7 +18,7 @@ export const registerAction = async (
   password: string,
 ): Promise<RegisterError | RegisterSuccess> => {
   try {
-    const { data } = await tesloApi.post<AuthResponse>('/auth/register', {
+    const { data } = await tesloApi.post('/auth/register', {
       fullName,
       email,
       password,

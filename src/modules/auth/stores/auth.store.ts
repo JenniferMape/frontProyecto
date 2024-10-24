@@ -3,12 +3,13 @@ import { defineStore } from 'pinia';
 import { AuthStatus, type AuthResponse, type User } from '@/modules/auth/interfaces';
 import { tesloApi } from '@/api/tesloApi';
 import { useLocalStorage } from '@vueuse/core';
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
   const authStatus = ref<AuthStatus>(AuthStatus.Checking);
   const user = ref<User | undefined>();
   const token = useLocalStorage<string | null>('authToken', null);
-
+  const router = useRouter();
   // Acción de inicio de sesión
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -68,10 +69,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Acción para cerrar sesión
   const logout = () => {
-    token.value = null;
-    user.value = undefined;
+    router.push({ name: 'home' });
+
     authStatus.value = AuthStatus.Unauthenticated;
     localStorage.removeItem('authToken');
+    token.value = null;
+    user.value = undefined;
   };
 
   // Comprobar el estado de autenticación

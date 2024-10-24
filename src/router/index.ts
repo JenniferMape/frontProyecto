@@ -79,10 +79,16 @@ const router = createRouter({
       component: () => import('@/modules/user/layouts/UserLayout.vue'),
       children: [
         {
-          path: 'profile',
-          name: 'profile',
+          path: 'clientProfile',
+          name: 'clientProfile',
           beforeEnter: [isAuthenticatedGuard],
-          component: () => import('@/modules/user/pages/ProfilePage.vue'),
+          component: () => import('@/modules/user/pages/ClientProfilePage.vue'),
+        },
+        {
+          path: 'companyProfile',
+          name: 'companyProfile',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('@/modules/user/pages/CompanyProfilePage.vue'),
         },
       ],
     },
