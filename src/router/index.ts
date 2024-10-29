@@ -35,7 +35,7 @@ const router = createRouter({
       ],
     },
 
-    // Auth
+    // Authb
     {
       path: '/auth',
       name: 'auth',
@@ -82,13 +82,25 @@ const router = createRouter({
           path: 'clientProfile',
           name: 'clientProfile',
           beforeEnter: [isAuthenticatedGuard],
-          component: () => import('@/modules/user/pages/ClientProfilePage.vue'),
+          component: () => import('@/modules/user/pages/clientPages/ClientProfilePage.vue'),
         },
         {
           path: 'companyProfile',
           name: 'companyProfile',
           beforeEnter: [isAuthenticatedGuard],
-          component: () => import('@/modules/user/pages/CompanyProfilePage.vue'),
+          component: () => import('@/modules/user/pages/companyPages/CompanyProfilePage.vue'),
+        },
+        {
+          path: 'companyOffers',
+          name: 'companyOffers',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('@/modules/user/pages/companyPages/CompanyOffers.vue'),
+        },
+        {
+          path: 'formOffer',
+          name: 'formOffer',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('@/modules/user/pages/companyPages/FormOffers.vue'),
         },
       ],
     },
