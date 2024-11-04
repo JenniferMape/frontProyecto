@@ -46,15 +46,6 @@ const router = createRouter({
           path: 'login',
           name: 'login',
           component: () => import('@/modules/auth/pages/LoginPage.vue'),
-          beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem('token');
-
-            if (token) {
-              next({ name: 'home' }); // Redirige si está autenticado
-            } else {
-              next();
-            }
-          },
         },
         {
           path: 'register',

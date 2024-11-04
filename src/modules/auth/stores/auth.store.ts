@@ -27,11 +27,9 @@ export const useAuthStore = defineStore('auth', () => {
 
         return true;
       } else {
-        logout();
         return false;
       }
     } catch (error) {
-      logout();
       return false;
     }
   };

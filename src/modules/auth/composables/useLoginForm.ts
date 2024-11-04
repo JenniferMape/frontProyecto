@@ -28,9 +28,13 @@ export function useLoginForm() {
     try {
       const ok = await authStore.login(email, password);
 
-      if (ok) {
-        router.push({ name: 'home' });
+      if (!ok) {
+        toast.error('Correo electrónico o contraseña incorrectos.');
+        return;
       }
+
+      // Redirigir solo si el inicio de sesión fue exitoso
+      router.push({ name: 'home' });
     } catch (error: any) {
       if (error.response) {
         errorMessage.value = error.response.data.message || 'Error en el inicio de sesión.';

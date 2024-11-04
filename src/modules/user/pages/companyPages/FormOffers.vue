@@ -21,10 +21,9 @@
       </label>
       <select v-model="offerCategory" class="select select-bordered">
         <option disabled selected>Selecciona una categoría</option>
-        <option value="tecnologia">Tecnología</option>
-        <option value="ropa">Ropa</option>
-        <option value="alimentacion">Alimentación</option>
-        <!-- Agregar más opciones según sea necesario -->
+        <option v-for="category in categories" :key="category.value" :value="category.value">
+          {{ category.label }}
+        </option>
       </select>
     </div>
 
@@ -44,6 +43,19 @@
       </div>
     </div>
 
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Precio</span>
+      </label>
+      <input
+        v-model="price"
+        type="number"
+        class="input input-bordered"
+        placeholder="Ej: 10.00"
+        min="0"
+        step="0.01"
+      />
+    </div>
     <div class="form-control mb-4">
       <label class="label">
         <span class="label-text">Código de descuento</span>
@@ -106,6 +118,15 @@ const offerImage = ref(null);
 const offerWebsite = ref('');
 const offerAddress = ref('');
 
+const categories = [
+  { value: '1', label: 'Alimentación' },
+  { value: '2', label: 'Automoción' },
+  { value: '3', label: 'Electrónica' },
+  { value: '4', label: 'Hogar' },
+  { value: '5', label: 'Moda' },
+  { value: '6', label: 'Ocio y Cultura' },
+  { value: '7', label: 'Salud' },
+];
 // Manejo de imagen de la oferta
 const uploadOfferImage = (event) => {
   const file = event.target.files[0];
