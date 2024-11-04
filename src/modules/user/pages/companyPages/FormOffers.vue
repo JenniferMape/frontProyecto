@@ -56,6 +56,19 @@
         step="0.01"
       />
     </div>
+
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Descripción de la oferta</span>
+      </label>
+      <textarea
+        v-model="offerDescription"
+        class="textarea textarea-bordered"
+        placeholder="Escribe una descripción detallada de la oferta"
+        rows="4"
+      ></textarea>
+    </div>
+
     <div class="form-control mb-4">
       <label class="label">
         <span class="label-text">Código de descuento</span>
@@ -100,23 +113,32 @@
       />
     </div>
 
-    <button @click="submitOffer" class="btn btn-primary mt-4">Publicar Oferta</button>
+    <button @click="createOfferPayload" class="btn btn-primary mt-4">Publicar Oferta</button>
   </section>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
+import { tesloApi } from '@/api/tesloApi';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/modules/auth/composables/useAuthAction';
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const toast = useToast();
 const offerTitle = ref('');
 const offerCategory = ref('');
 const startDate = ref('');
 const endDate = ref('');
+const price = ref('');
+const offerDescription = ref('');
 const discountCode = ref('');
 const offerImage = ref(null);
 const offerWebsite = ref('');
 const offerAddress = ref('');
+const id = authStore.user?.id;
 
 const categories = [
   { value: '1', label: 'Alimentación' },
@@ -127,6 +149,7 @@ const categories = [
   { value: '6', label: 'Ocio y Cultura' },
   { value: '7', label: 'Salud' },
 ];
+
 // Manejo de imagen de la oferta
 const uploadOfferImage = (event) => {
   const file = event.target.files[0];
@@ -135,26 +158,67 @@ const uploadOfferImage = (event) => {
   }
 };
 
-// Enviar oferta
-const submitOffer = () => {
+// Función para formatear fechas
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 19).replace('T', ' '); // Formato "YYYY-MM-DD HH:mm:ss"
+};
+
+// Crear objeto de la oferta y hacer la petición al backend
+const createOfferPayload = async () => {
+  // Verificar si todos los campos obligatorios están completados
   if (
     !offerTitle.value ||
     !offerCategory.value ||
     !startDate.value ||
     !endDate.value ||
+    !price.value ||
+    !offerDescription.value ||
     !offerWebsite.value
   ) {
     toast.error('Por favor, completa todos los campos obligatorios.');
     return;
   }
 
-  // Lógica para enviar la oferta al backend
-  toast.success('Oferta publicada con éxito');
-};
-</script>
+  // Crear un objeto FormData para manejar los datos, incluyendo la imagen
+  const formData = new FormData();
+  formData.append('id_company_offer', id);
+  formData.append('id_category_offer', offerCategory.value);
+  formData.append('title_offer', offerTitle.value);
+  formData.append('price_offer', price.value);
+  formData.append('description_offer', offerDescription.value);
+  formData.append('start_date_offer', formatDateTime(startDate.value)); 
+  formData.append('end_date_offer', formatDateTime(endDate.value)); 
+  formData.append('discount_code_offer', discountCode.value || null);
+  formData.append('web_offer', offerWebsite.value || null);
+  formData.append('address_offer', offerAddress.value || null);
 
-<style scoped>
-.input-error {
-  border-color: red;
-}
-</style>
+  // Agregar imagen si existe
+  if (offerImage.value) {
+    formData.append('image_offer', offerImage.value);
+  }
+
+  try {
+    // Realizar la petición POST al backend
+    const response = await tesloApi.post('/offer', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', 
+      },
+    });
+
+    // Manejo de la respuesta
+    if (response.status === 201) { 
+      const result = response.data; 
+      toast.success('Oferta publicada con éxito');
+      router.push({ name: 'companyOffers' });
+    } else {
+      toast.error(`Error: ${response.data.error}`); 
+    }
+  } catch (error) {
+    toast.error('Hubo un error al enviar la oferta. Inténtalo nuevamente.');
+    console.error('Error en la solicitud:', error);
+  }
+};
+
+
+</script>

@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
 import { useAuthStore } from './useAuthAction';
+import { useToast } from 'vue-toastification';
 
 export function useLoginForm() {
   const emailuser = ref('');
