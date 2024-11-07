@@ -88,10 +88,14 @@ const router = createRouter({
           component: () => import('@/modules/user/pages/companyPages/CompanyOffers.vue'),
         },
         {
-          path: 'formOffer',
+          path: '/offer/:offerId?',
           name: 'formOffer',
           beforeEnter: [isAuthenticatedGuard],
-          component: () => import('@/modules/user/pages/companyPages/FormOffers.vue'),
+          component: () => import('@/modules/user/pages/companyPages/EditOffers.vue'),
+          props: (route) => ({
+            offerId: route.params.offerId || null,
+            isEditMode: !!route.params.offerId, // isEditMode será true si offerId está presente
+          }),
         },
       ],
     },

@@ -39,9 +39,8 @@ import CustomFooter from '@/modules/common/components/CustomFooter.vue';
 import SearchBar from '@/modules/common/components/NavBar/components/SearchBar.vue';
 import AuthButtons from '@/modules/common/components/NavBar/components/AuthButtons/AuthButtons.vue';
 import Sidebar from '@/modules/common/components/Sidebar.vue';
-import { computed } from 'vue';
 import { useAuthStore } from '@/modules/auth/stores/auth.store';
 
 const authStore = useAuthStore();
-const isCompanyUser = authStore.isCompany; // Ajusta según cómo almacenes el tipo de usuario
+const isCompanyUser = authStore.isCompany; 
 </script>

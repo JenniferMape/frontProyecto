@@ -7,16 +7,27 @@
     </div>
 
     <div v-if="paginatedOffers.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div v-for="offer in paginatedOffers" :key="offer.id" class="bg-gray-100 p-4 rounded-lg shadow-md">
+      <div
+        v-for="offer in paginatedOffers"
+        :key="offer.id"
+        class="bg-gray-100 p-4 rounded-lg shadow-md"
+      >
         <img
           :src="offer.image_offer"
           alt="Imagen de la oferta"
           class="w-full h-40 object-cover rounded-md mb-4"
         />
         <h3 class="font-bold text-lg mb-2">{{ offer.title_offer }}</h3>
-        <p class="text-sm text-gray-600 mb-1">Categoría: {{ offer.category }}</p>
-        <p class="text-sm text-gray-600 mb-1">Fecha: {{ offer.start_date_offer }} - {{ offer.end_date_offer }}</p>
-        <a :href="offer.web_offer" target="_blank" class="text-blue-500 hover:underline">Ver Oferta</a>
+        <p class="text-sm text-gray-600 mb-1">Categoría: {{ offer.category_offer_name }}</p>
+        <p class="text-sm text-gray-600 mb-1">
+          Fecha: {{ offer.start_date_offer }} - {{ offer.end_date_offer }}
+        </p>
+        <router-link
+          :to="{ name: 'formOffer', params: { offerId: offer.id } }"
+          class="text-blue-400 hover:underline"
+        >
+          Editar Oferta
+        </router-link>
       </div>
     </div>
 
@@ -44,30 +55,68 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { tesloApi } from '@/api/tesloApi';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/composables/useAuthAction';
 
 const authStore = useAuthStore();
 const companyId = authStore.user?.id;
 
-// Variables para manejar las ofertas y la paginación
+// Variables para manejar las ofertas, categorías y la paginación
 const offers = ref([]);
+let categoryMap = {};
 const currentPage = ref(1);
 const offersPerPage = 6;
 
-// Función para obtener las ofertas de la compañía
-const getOffersByCompany = async (companyId) => {
+// Función para formatear fecha a día/mes/año
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
+
+// Función para obtener las categorías desde la base de datos
+const loadCategories = async () => {
+  try {
+    const response = await tesloApi.get('/category'); // Ajusta la ruta según tu API
+    if (response.data.status === 200) {
+      categoryMap = response.data.result.reduce((map, category) => {
+        map[category.id] = category.name_category;
+        return map;
+      }, {});
+    } else {
+      console.error('Error al obtener las categorías:', response.data.message);
+    }
+  } catch (error) {
+    console.error('Error al obtener categorías:', error.response?.data || error.message);
+  }
+};
+
+// Función para obtener las ofertas de la compañía y procesarlas
+const getOffersByCompany = async () => {
+  // Asegura que las categorías estan cargadas antes de procesar ofertas
+  if (!Object.keys(categoryMap).length) {
+    await loadCategories();
+  }
+
   try {
     const response = await tesloApi.get(`/offer?filter=type:offer_company:${companyId}`);
     if (response.data.status === 200) {
-      offers.value = response.data.result;
+      offers.value = response.data.result.map((offer) => ({
+        ...offer,
+        start_date_offer: formatDate(offer.start_date_offer),
+        end_date_offer: formatDate(offer.end_date_offer),
+        category_offer_name: categoryMap[offer.id_category_offer] || 'Categoría desconocida',
+      }));
     } else {
       console.error('Error al obtener las ofertas:', response.data.message);
     }
   } catch (error) {
-    console.error('Error al obtener ofertas:', error.response.data);
+    console.error('Error al obtener ofertas:', error.response?.data || error.message);
   }
 };
 
@@ -87,8 +136,22 @@ const changePage = (page) => {
   }
 };
 
-// Llamar a la función para obtener las ofertas al montar el componente
-getOffersByCompany(companyId);
+// Llamar a la función para obtener las ofertas y categorías al montar el componente
+onMounted(async () => {
+  await loadCategories();
+  await getOffersByCompany();
+});
+
+// Observar cambios en la ruta para actualizar las ofertas al volver a esta página
+const route = useRoute();
+watch(
+  () => route.path,
+  async (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      await getOffersByCompany();
+    }
+  },
+);
 
 const router = useRouter();
 const goToNewOffer = () => {
