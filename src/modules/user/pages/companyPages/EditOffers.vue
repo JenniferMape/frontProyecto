@@ -109,7 +109,17 @@
       <!-- Input de archivo para subir la imagen -->
       <input type="file" @change="handleImageChange" ref="offerImageInput" class="hidden" />
     </div>
-
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Página web de la oferta</span>
+      </label>
+      <input
+        v-model="offerWebsite"
+        type="url"
+        class="input input-bordered"
+        placeholder="Ej: https://ejemplo.com"
+      />
+    </div>
     <div class="form-control mb-4">
       <label class="label">
         <span class="label-text">Dirección de la oferta</span>
@@ -123,8 +133,11 @@
     </div>
 
     <!-- Botón para crear o actualizar oferta -->
-    <button @click="handleOfferAction" class="btn btn-primary mt-4">
+    <button @click="handleOfferAction" class="btn btn-primary mt-4 w-full">
       {{ isEditMode ? 'Guardar Cambios' : 'Publicar Oferta' }}
+    </button>
+    <button v-if="isEditMode" @click="deleteOffer" class="btn btn-error mt-4 w-full">
+      Eliminar Oferta
     </button>
   </section>
 </template>
@@ -185,17 +198,48 @@ const isEditMode = ref(props.isEditMode);
 // Watch for changes to isEditMode prop
 watch(
   () => props.isEditMode,
-  (newVal) => {
-    isEditMode.value = newVal;
+  (newIsEditMode) => {
+    isEditMode.value = newIsEditMode; // Sincroniza la variable local con la propiedad
+  },
+);
+
+// Watch for changes to `offerId`
+watch(
+  () => props.offerId,
+  (newOfferId, oldOfferId) => {
+    if (newOfferId && newOfferId !== oldOfferId) {
+      // Llamada a loadOfferData() solo si el `offerId` cambia
+      loadOfferData();
+    } else if (!newOfferId) {
+      // Si no hay `offerId` (modo creación), resetear el formulario
+      resetForm();
+    }
   },
 );
 
 // Load offer data on mounted
 onMounted(() => {
-  if (props.isEditMode && props.offerId) {
-    loadOfferData();
+  if (props.offerId) {
+    loadOfferData(); // Carga los datos si estamos en modo edición
+  } else {
+    resetForm(); // Reinicia los campos del formulario si no hay `offerId`
   }
 });
+
+// Resetea los valores de los campos cuando se está creando una nueva oferta
+const resetForm = () => {
+  offerTitle.value = '';
+  offerCategory.value = '';
+  startDate.value = '';
+  endDate.value = '';
+  price.value = '';
+  offerDescription.value = '';
+  discountCode.value = '';
+  offerImageUrl.value = null;
+  offerWebsite.value = '';
+  offerAddress.value = '';
+  offerImage.value = null;
+};
 
 function triggerFileInput() {
   // Activa el input de archivo
@@ -223,25 +267,18 @@ const loadOfferData = async () => {
     const response = await tesloApi.get(`/offer?filter=type:offer_id:${props.offerId}`);
     const offer = response.data.result;
 
-    offerTitle.value = offer.title_offer;
-    offerCategory.value = offer.id_category_offer;
-    startDate.value = offer.start_date_offer.split(' ')[0]; // Solo toma la fecha (yyyy-MM-dd)
-    endDate.value = offer.end_date_offer.split(' ')[0];
-    price.value = offer.price_offer;
-    offerDescription.value = offer.description_offer;
-    discountCode.value = offer.discount_code_offer;
-    offerWebsite.value = offer.web_offer;
-    offerAddress.value = offer.address_offer;
+    if (offer.title_offer !== null) offerTitle.value = offer.title_offer;
+    if (offer.id_category_offer !== null) offerCategory.value = offer.id_category_offer;
+    if (offer.start_date_offer !== null) startDate.value = offer.start_date_offer.split(' ')[0]; // Solo toma la fecha (yyyy-MM-dd)
+    if (offer.end_date_offer !== null) endDate.value = offer.end_date_offer.split(' ')[0];
+    if (offer.price_offer !== null) price.value = offer.price_offer;
+    if (offer.description_offer !== null) offerDescription.value = offer.description_offer;
+    if (offer.discount_code_offer !== null) discountCode.value = offer.discount_code_offer;
+    if (offer.web_offer !== null) offerWebsite.value = offer.web_offer;
+    if (offer.address_offer !== null) offerAddress.value = offer.address_offer;
+    if (offer.image_offer !== null) offerImageUrl.value = offer.image_offer;
   } catch (error) {
     toast.error('Error al cargar los datos de la oferta');
-  }
-};
-
-// Handle image upload
-const uploadOfferImage = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    offerImage.value = file;
   }
 };
 
@@ -293,7 +330,7 @@ const createOfferPayload = async () => {
     });
 
     if (response.status === 201) {
-      toast.success('Oferta publicada con éxito');
+      toast.success(response.message);
       router.push({ name: 'companyOffers' });
     } else {
       toast.error(`Error: ${response.data.error}`);
@@ -302,70 +339,51 @@ const createOfferPayload = async () => {
     toast.error('Hubo un error al enviar la oferta.');
   }
 };
-
-// Update offer payload
 const updateOfferPayload = async () => {
-  // Datos del formulario en un objeto
-  const data = {
-    id: props.offerId,
-    id_category_offer: offerCategory.value,
-    title_offer: offerTitle.value,
-    price_offer: price.value,
-    description_offer: offerDescription.value,
-    start_date_offer: formatDateTime(startDate.value),
-    end_date_offer: formatDateTime(endDate.value),
-    discount_code_offer: discountCode.value || null,
-    web_offer: offerWebsite.value || null,
-    address_offer: offerAddress.value || null,
-  };
+  const formData = new FormData();
+  formData.append('id', props.offerId);
+  formData.append('id_company_offer', id);
+  formData.append('id_category_offer', offerCategory.value);
+  formData.append('title_offer', offerTitle.value);
+  formData.append('price_offer', price.value);
+  formData.append('description_offer', offerDescription.value);
+  formData.append('start_date_offer', formatDateTime(startDate.value));
+  formData.append('end_date_offer', formatDateTime(endDate.value));
+  formData.append('discount_code_offer', discountCode.value || null);
+  formData.append('web_offer', offerWebsite.value || null);
+  formData.append('address_offer', offerAddress.value || null);
 
-  // Si hay una imagen seleccionada, convertirla a base64 o añadir la URL
   if (offerImage.value) {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const imageBase64 = reader.result.split(',')[1]; // Obtener solo la parte base64
-      const imageData = { image_offer: imageBase64 }; // Aquí puedes ajustar según cómo deseas manejar la imagen
+    formData.append('image_offer', offerImage.value);
+  }
 
-      // Agregar la imagen al objeto de datos
-      const payload = { ...data, ...imageData };
+  try {
+    const response = await tesloApi.post('/offer', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
 
-      try {
-        const response = await tesloApi.put('/offer', JSON.stringify(payload), {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.status === 200) {
-          console.log('Oferta actualizada con éxito');
-          // Realizar alguna acción después de la actualización exitosa
-        } else {
-          console.error('Error al actualizar la oferta');
-        }
-      } catch (error) {
-        console.error('Hubo un error con la solicitud:', error);
-      }
-    };
-
-    reader.readAsDataURL(offerImage.value); // Leer la imagen como base64
-  } else {
-    // Si no hay imagen, solo enviar los datos
-    try {
-      const response = await tesloApi.put('/offer', JSON.stringify(data), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status === 200) {
-        console.log('Oferta actualizada con éxito');
-        // Realizar alguna acción después de la actualización exitosa
-      } else {
-        console.error('Error al actualizar la oferta');
-      }
-    } catch (error) {
-      console.error('Hubo un error con la solicitud:', error);
+    if (response.status === 200) {
+      toast.success(response.message);
+      router.push({ name: 'companyOffers' });
+    } else {
+      toast.error(`Error: ${response.data.error}`);
     }
+  } catch (error) {
+    toast.error('Hubo un error al editar la oferta.');
+  }
+};
+const deleteOffer = async () => {
+  try {
+    const response = await tesloApi.delete(`/offer?id=${props.offerId}`);
+
+    if (response.status === 200) {
+      toast.success(response.message);
+      router.push({ name: 'companyOffers' });
+    } else {
+      toast.error(`Error: ${response.data.error}`);
+    }
+  } catch (error) {
+    toast.error('Hubo un error al editar la oferta.');
   }
 };
 </script>
