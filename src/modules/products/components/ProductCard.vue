@@ -2,81 +2,79 @@
   <div class="flex bg-base-100 shadow-lg rounded-lg overflow-hidden mb-4 h-40">
     <!-- Imagen del producto -->
     <div class="w-1/3">
-      <img class="w-full h-full object-cover" :src="product.image" :alt="product.title" />
+      <img
+        class="w-full h-full object-cover"
+        :src="product.image_offer"
+        :alt="product.title_offer"
+      />
     </div>
 
     <!-- Contenido de la tarjeta -->
     <div class="w-2/3 p-4 flex flex-col justify-between">
       <!-- Sección del tiempo en la esquina superior derecha -->
       <div class="flex justify-between">
-        <span class="text-sm text-gray-400 ml-auto">{{ product.time }}</span>
+
+        <h2 class="text-md font-bold text-gray-900 line-clamp-1">{{ product.title_offer }}</h2>
+        <span class="text-sm text-gray-400 ml-auto">Fin oferta: {{ formattedTime }}</span>
       </div>
 
       <!-- Título del producto -->
-      <h2 class="text-md font-bold text-gray-900 line-clamp-1">{{ product.title }}</h2>
 
-      <!-- Precio y tienda -->
+      <!-- Precio -->
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <!-- Precio -->
-          <span class="text-lg font-semibold text-primary">{{ product.price }}€</span>
-          <!-- Precio original tachado (opcional) -->
-          <span v-if="product.oldPrice" class="text-sm line-through text-gray-500"
-            >{{ product.oldPrice }}€</span
-          >
+          <span class="text-lg font-semibold text-primary">{{ product.price_offer }}€</span>
         </div>
       </div>
 
       <!-- Descripción del producto -->
-      <p class="text-sm text-gray-600 line-clamp-2">{{ product.description }}</p>
+      <p class="text-sm text-gray-600 line-clamp-2">{{ product.description_offer }}</p>
 
       <!-- Sección acciones -->
       <div class="flex justify-between items-center mt-2">
-        <div class="flex items-center space-x-2">
-          <!-- Avatar del Vendedor -->
-          <img :src="product.storeAvatar" alt="avatar" class="w-8 h-8 rounded-full object-cover" />
-          <!-- Vendedor -->
-          <span class="text-xs text-orange-500">{{ product.store }}</span>
-        </div>
-
-        <div class="flex items-center space-x-4">
-          <!-- Comentarios -->
-          <div class="flex items-center space-x-1">
-            <i class="far fa-comment-alt text-gray-500"></i>
-            <span class="text-sm">{{ product.comments }}</span>
-          </div>
-
-          <!-- Botón para ver la oferta -->
-          <button class="btn btn-warning btn-sm">Ir al chollo</button>
-        </div>
+        <!-- Botón para ver la oferta -->
+        <a :href="product.web_offer" target="_blank" class="btn btn-warning btn-sm">Ir al chollo</a>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
+// Recibir los datos del producto
 const props = defineProps({
   product: {
     type: Object,
     required: true,
     default: () => ({
-      title: 'Título del producto',
-      description: 'Descripción corta del producto...',
-      price: '100.95',
-      oldPrice: '120.00',
-      store: 'Coolmod',
-      time: 'hace 32m',
-      image: 'https://via.placeholder.com/150',
-      userName: 'Tatsuya',
-      userAvatar: 'https://via.placeholder.com/50',
-      comments: 10,
+      title_offer: 'Título del producto',
+      description_offer: 'Descripción corta del producto...',
+      price_offer: '100.95',
+      image_offer: 'https://via.placeholder.com/150',
+      web_offer: 'https://due-home.com/aparadores-de-comedor/aparador-baltik.html',
+      start_date:'01/01/2000',
+      end_date:'01/'
     }),
   },
+});
+
+// Formatear la fecha
+const formattedTime = computed(() => {
+  const endDate = new Date(props.product.end_date);
+
+  // Extraer el día, mes y año
+  const day = String(endDate.getDate()).padStart(2, '0');
+  const month = String(endDate.getMonth() + 1).padStart(2, '0'); // Los meses son 0 indexados
+  const year = endDate.getFullYear();
+
+  // Retornar en formato dd/mm/yyyy
+  return `${day}/${month}/${year}`;
 });
 </script>
 
 <style scoped>
 .h-40 {
-  height: 10rem; /* Ajusta la altura */
+  height: 12rem; 
 }
 </style>
