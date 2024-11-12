@@ -22,6 +22,14 @@ const router = createRouter({
           name: 'contact',
           component: () => import('@/modules/landing/pages/ContactPage.vue'),
         },
+        {
+          path: '/offer/:offerId?',
+          name: 'OfferDetail',
+          component: () => import('@/modules/offer/pages/offerView.vue'),
+          props: (route) => ({
+            offerId: route.params.offerId || null,
+          }),
+        }
         // {
         //   path: 'pokemon/:id',
         //   name: 'pokemon',
@@ -88,7 +96,7 @@ const router = createRouter({
           component: () => import('@/modules/user/pages/companyPages/CompanyOffers.vue'),
         },
         {
-          path: '/offer/:offerId?',
+          path: '/offer/edit/:offerId?',
           name: 'formOffer',
           beforeEnter: [isAuthenticatedGuard],
           component: () => import('@/modules/user/pages/companyPages/EditOffers.vue'),

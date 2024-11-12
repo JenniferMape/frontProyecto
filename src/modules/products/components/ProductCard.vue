@@ -33,7 +33,10 @@
       <!-- Sección acciones -->
       <div class="flex justify-between items-center mt-2">
         <!-- Botón para ver la oferta -->
-        <a :href="product.web_offer" target="_blank" class="btn btn-warning btn-sm">Ir al chollo</a>
+        <!-- <a :href="product.web_offer" target="_blank" class="btn btn-warning btn-sm">Ir al chollo</a> -->
+        <router-link :to="{ name: 'OfferDetail', params: { offerId: product.id } }" class="btn btn-warning btn-sm">
+          Ver oferta
+        </router-link>
       </div>
     </div>
   </div>

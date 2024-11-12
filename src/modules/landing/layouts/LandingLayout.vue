@@ -19,10 +19,10 @@
           <ThemeToggle />
         </template>
       </NavBar>
-      <NavItems />
+   
     </header>
 
-    <main class="container mx-auto p-4">
+    <main>
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -39,6 +39,6 @@ import LogoNav from '@/modules/common/components/NavBar/components/LogoNav.vue';
 import SearchBar from '@/modules/common/components/NavBar/components/SearchBar.vue';
 import AuthButtons from '@/modules/common/components/NavBar/components/AuthButtons/AuthButtons.vue';
 import ThemeToggle from '@/modules/common/components/NavBar/components/ThemeToggle.vue';
-import NavItems from '@/modules/common/components/NavItems.vue';
+
 import CustomFooter from '@/modules/common/components/CustomFooter.vue';
 </script>
