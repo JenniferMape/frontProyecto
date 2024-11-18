@@ -1,78 +1,68 @@
 <template>
   <div class="container mx-auto p-4">
-    <section class="bg-white shadow-md p-6 rounded-lg ml-6">
-      <h2 class="font-bold text-xl mb-6">Detalles de la Oferta</h2>
-
-      <!-- Título de la oferta -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Título:</h3>
-        <p>{{ offerTitle }}</p>
-      </div>
-
-      <!-- Categoría de la oferta -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Categoría:</h3>
-        <p>{{ offerCategoryLabel }}</p>
-      </div>
-
-      <!-- Fechas de la oferta -->
-      <div class="flex gap-4 mb-4">
-        <div>
-          <h3 class="font-semibold text-lg">Fecha de inicio:</h3>
-          <p>{{ formattedStartDate }}</p>
-        </div>
-
-        <div>
-          <h3 class="font-semibold text-lg">Fecha de finalización:</h3>
-          <p>{{ formattedEndDate }}</p>
-        </div>
-      </div>
-
-      <!-- Precio -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Precio:</h3>
-        <p>{{ price | currency }}</p>
-      </div>
-
-      <!-- Descripción de la oferta -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Descripción:</h3>
-        <p>{{ offerDescription }}</p>
-      </div>
-
-      <!-- Código de descuento -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Código de descuento:</h3>
-        <p>{{ discountCode || 'No disponible' }}</p>
-      </div>
-
-      <!-- Imagen de la oferta -->
-      <div v-if="offerImageUrl" class="flex justify-center mb-4">
+    <div class="card bg-base-100 shadow-xl">
+      <!-- Imagen principal -->
+      <figure class="p-4">
         <img
-          :src="offerImageUrl"
+          :src="offerImageUrl || 'default-image.jpg'"
           alt="Imagen de la oferta"
-          class="w-40 h-40 object-cover rounded-md shadow-md"
+          class="rounded-lg object-cover"
         />
-      </div>
+      </figure>
 
-      <!-- Página web de la oferta -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Página web:</h3>
-        <p>
-          <a :href="offerWebsite" target="_blank" class="text-blue-500">{{
-            offerWebsite || 'No disponible'
-          }}</a>
-        </p>
-      </div>
+      <!-- Información de la oferta -->
+      <div class="card-body p-6">
+        <h2 class="card-title text-2xl font-bold">{{ offerTitle }}</h2>
 
-      <!-- Dirección de la oferta -->
-      <div class="mb-4">
-        <h3 class="font-semibold text-lg">Dirección:</h3>
-        <p>{{ offerAddress || 'No disponible' }}</p>
-      </div>
+        <div class="text-2xl font-semibold text-orange-500 mb-2">
+          {{ newPrice | currency }}
+          <span class="line-through text-gray-500 text-lg ml-2">{{
+            originalPrice | currency
+          }}</span>
+          <span class="text-lg text-green-600">(-{{ discountPercentage }}%)</span>
+        </div>
 
-      <button @click="goBack" class="btn btn-secondary mt-4 w-full">Volver</button>
-    </section>
+        <p class="text-gray-600">{{ offerCategoryLabel }}</p>
+
+        <!-- Botón para ir al enlace de la oferta -->
+        <div class="card-actions mt-4">
+          <a :href="offerWebsite" target="_blank" class="btn btn-primary w-full"> Ir al chollo </a>
+        </div>
+        
+
+        <!-- Detalles adicionales de la oferta -->
+        <div class="bg-base-200 rounded-lg p-4 mt-6">
+          <h3 class="font-semibold text-lg">Descripción de la oferta</h3>
+          <p class="text-gray-600 mt-2">{{ offerDescription }}</p>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="grid grid-cols-2 gap-4 mt-6">
+          <div>
+            <h4 class="font-semibold text-md">Fecha de inicio:</h4>
+            <p>{{ formattedStartDate }}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-md">Fecha de finalización:</h4>
+            <p>{{ formattedEndDate }}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-md">Código de descuento:</h4>
+            <p>{{ discountCode || 'No disponible' }}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-md">Dirección:</h4>
+            <p>{{ offerAddress || 'No disponible' }}</p>
+          </div>
+        </div>
+        <button
+          @click="goBack"
+          class="btn btn-secondary mt-6 w-full hover:bg-primary transition-colors duration-200"
+        >
+          Volver
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -95,7 +85,9 @@ const offerTitle = ref('');
 const offerCategoryLabel = ref('');
 const formattedStartDate = ref('');
 const formattedEndDate = ref('');
-const price = ref('');
+const newPrice = ref('');
+const originalPrice = ref('');
+const discountPercentage = ref('');
 const offerDescription = ref('');
 const discountCode = ref('');
 const offerImageUrl = ref(null);
@@ -124,7 +116,9 @@ const loadOfferData = async () => {
       categories.find((cat) => cat.value === offer.id_category_offer)?.label || 'No disponible';
     formattedStartDate.value = formatDate(offer.start_date_offer);
     formattedEndDate.value = formatDate(offer.end_date_offer);
-    price.value = offer.price_offer || 0;
+    newPrice.value = offer.new_price_offer || 0;
+    originalPrice.value = offer.original_price_offer || 0;
+    discountPercentage.value = calculateDiscountPercentage(offer.new_price_offer, offer.original_price_offer);
     offerDescription.value = offer.description_offer || 'No disponible';
     discountCode.value = offer.discount_code_offer || 'No disponible';
     offerImageUrl.value = offer.image_offer || null;
@@ -141,9 +135,15 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('es-ES');
 };
 
+const calculateDiscountPercentage = (newPrice, originalPrice) => {
+  if (!newPrice || !originalPrice) return 0;
+  return Math.round(((originalPrice - newPrice) / originalPrice) * 100);
+};
+
+
 const goBack = () => {
   const router = useRouter();
-  router.push({ name: 'companyOffers' });
+  router.push({ name: 'home' });
 };
 
 // Load offer data on component mount

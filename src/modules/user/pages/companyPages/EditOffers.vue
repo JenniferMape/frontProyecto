@@ -1,6 +1,6 @@
 <template>
   <!-- Offer Form -->
-  <section class="w-3/4 bg-white shadow-md p-6 rounded-lg ml-6">
+  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
     <h2 class="font-bold text-xl mb-6">{{ isEditMode ? 'Editar Oferta' : 'Nueva Oferta' }}</h2>
 
     <!-- Campos del formulario -->
@@ -46,15 +46,29 @@
 
     <div class="form-control mb-4">
       <label class="label">
-        <span class="label-text">Precio</span>
+        <span class="label-text">Precio original</span>
       </label>
       <input
-        v-model="price"
+        v-model="oldPrice"
         type="number"
         class="input input-bordered"
-        placeholder="Ej: 10.00"
+        placeholder="Ej: 10.00€"
         min="0"
-        step="0.01"
+        step="0.10"
+      />
+    </div>
+
+    <div class="form-control mb-4">
+      <label class="label">
+        <span class="label-text">Precio con descuento</span>
+      </label>
+      <input
+        v-model="newPrice"
+        type="number"
+        class="input input-bordered"
+           placeholder="Ej: 8.00€"
+        min="0"
+        step="0.10"
       />
     </div>
 
@@ -159,7 +173,8 @@ const offerTitle = ref('');
 const offerCategory = ref('');
 const startDate = ref('');
 const endDate = ref('');
-const price = ref('');
+const newPrice = ref('');
+const oldPrice = ref('');
 const offerDescription = ref('');
 const discountCode = ref('');
 const offerImage = ref(null);
@@ -232,7 +247,8 @@ const resetForm = () => {
   offerCategory.value = '';
   startDate.value = '';
   endDate.value = '';
-  price.value = '';
+  oldPrice.value = '';
+  newPrice.value = '';
   offerDescription.value = '';
   discountCode.value = '';
   offerImageUrl.value = null;
@@ -271,7 +287,8 @@ const loadOfferData = async () => {
     if (offer.id_category_offer !== null) offerCategory.value = offer.id_category_offer;
     if (offer.start_date_offer !== null) startDate.value = offer.start_date_offer.split(' ')[0]; // Solo toma la fecha (yyyy-MM-dd)
     if (offer.end_date_offer !== null) endDate.value = offer.end_date_offer.split(' ')[0];
-    if (offer.price_offer !== null) price.value = offer.price_offer;
+    if (offer.new_price_offer !== null) newPrice.value = offer.new_price_offer;
+    if (offer.original_price_offer !== null) oldPrice.value = offer.original_price_offer;
     if (offer.description_offer !== null) offerDescription.value = offer.description_offer;
     if (offer.discount_code_offer !== null) discountCode.value = offer.discount_code_offer;
     if (offer.web_offer !== null) offerWebsite.value = offer.web_offer;
@@ -300,7 +317,8 @@ const createOfferPayload = async () => {
     !offerCategory.value ||
     !startDate.value ||
     !endDate.value ||
-    !price.value ||
+    !oldPrice.value ||
+    !newPrice.value ||
     !offerDescription.value ||
     !offerWebsite.value
   ) {
@@ -312,7 +330,8 @@ const createOfferPayload = async () => {
   formData.append('id_company_offer', id);
   formData.append('id_category_offer', offerCategory.value);
   formData.append('title_offer', offerTitle.value);
-  formData.append('price_offer', price.value);
+  formData.append('new_price_offer', newPrice.value);
+  formData.append('original_price_offer', oldPrice.value);
   formData.append('description_offer', offerDescription.value);
   formData.append('start_date_offer', formatDateTime(startDate.value));
   formData.append('end_date_offer', formatDateTime(endDate.value));
@@ -345,7 +364,8 @@ const updateOfferPayload = async () => {
   formData.append('id_company_offer', id);
   formData.append('id_category_offer', offerCategory.value);
   formData.append('title_offer', offerTitle.value);
-  formData.append('price_offer', price.value);
+  formData.append('new_price_offer', newPrice.value);
+  formData.append('original_price_offer', oldPrice.value);
   formData.append('description_offer', offerDescription.value);
   formData.append('start_date_offer', formatDateTime(startDate.value));
   formData.append('end_date_offer', formatDateTime(endDate.value));

@@ -1,6 +1,6 @@
 <template>
   <!-- User's Offers -->
-  <section class="w-3/4 bg-white shadow-md p-6 rounded-lg ml-6">
+  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="font-bold text-xl">Mis Ofertas</h2>
       <button @click="goToNewOffer" class="btn btn-primary">Subir Nueva Oferta</button>
@@ -10,7 +10,7 @@
       <div
         v-for="offer in paginatedOffers"
         :key="offer.id"
-        class="bg-gray-100 p-4 rounded-lg shadow-md"
+        class="bg-base-200 p-4 rounded-lg shadow-md"
       >
         <img
           :src="offer.image_offer"

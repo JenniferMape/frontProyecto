@@ -14,7 +14,7 @@
       <!-- Sección del tiempo en la esquina superior derecha -->
       <div class="flex justify-between">
 
-        <h2 class="text-md font-bold text-gray-900 line-clamp-1">{{ product.title_offer }}</h2>
+        <h2 class="text-md font-bold text-neutral line-clamp-1">{{ product.title_offer }}</h2>
         <span class="text-sm text-gray-400 ml-auto">Fin oferta: {{ formattedTime }}</span>
       </div>
 

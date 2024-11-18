@@ -1,6 +1,6 @@
 <template>
   <!-- Profile Form -->
-  <section class="w-3/4 bg-white shadow-md p-6 rounded-lg ml-6">
+  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
     <h2 class="font-bold text-xl mb-6">Perfil</h2>
 
     <!-- Avatar Section -->
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <button @click="updateAvatar(avatar, id)" class="btn btn-sm mt-4" :disabled="!avatar">
+    <button @click="updateAvatar(avatar, id)" class="btn btn-sm  btn-secondary mt-4" :disabled="!avatar">
       Subir Avatar
     </button>
 
@@ -45,7 +45,7 @@
         </div>
         <button
           @click="handleChangeUsername"
-          class="btn btn-sm btn-outline mt-2"
+          class="btn btn-sm btn-secondary mt-2"
           :disabled="usernameError"
         >
           Cambiar nombre de usuario
@@ -73,7 +73,7 @@
         </div>
         <button
           @click="handleChangeEmail"
-          class="btn btn-sm btn-outline mt-2"
+          class="btn btn-sm btn-secondary mt-2"
           :disabled="emailError"
         >
           Cambiar email
@@ -101,7 +101,7 @@
         </div>
         <button
           @click="handleChangePassword"
-          class="btn btn-sm btn-outline mt-2"
+          class="btn btn-sm btn-secondary mt-2"
           :disabled="passwordError"
         >
           Cambiar contraseña
@@ -109,10 +109,25 @@
       </div>
     </div>
     <!-- Delete Account -->
-    <div class="mt-10">
+    <!-- <div class="mt-10">
       <button @click="deleteAccount(id)" class="btn btn-error">Eliminar Cuenta</button>
+    </div> -->
+
+    <div class="mt-10">
+      <button @click="showDeleteModal = true" class="btn btn-error">Eliminar Cuenta</button>
     </div>
   </section>
+  <!-- Confirm Delete Modal -->
+  <div v-if="showDeleteModal" class="modal modal-open">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Confirmar eliminación de cuenta</h3>
+      <p class="py-4">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+      <div class="modal-action">
+        <button @click="confirmDeleteAccount" class="btn btn-error">Confirmar</button>
+        <button @click="showDeleteModal = false" class="btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -139,6 +154,7 @@ const password = ref('');
 const avatar = ref(null);
 const cif = ref('');
 const id = authStore.user?.id;
+const showDeleteModal = ref(false);
 
 // Variables de error y estado de color
 const usernameError = ref(false);
@@ -201,6 +217,11 @@ const handleChangePassword = async () => {
   }
   await changePassword(password.value, id);
   password.value = '';
+};
+
+const confirmDeleteAccount = async () => {
+  await deleteAccount(id);
+  showDeleteModal.value = false;
 };
 </script>
 

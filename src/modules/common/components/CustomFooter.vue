@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer bg-secondary text-base-100 p-10 sticky bottom-0 text-center transition-opacity duration-300"
+    class="footer bg-secondary-content  p-10 sticky bottom-0 text-center transition-opacity duration-300"
     :class="{ 'opacity-100': showFooter, 'opacity-0': !showFooter }"
   >
     <aside>
@@ -20,7 +20,7 @@
       <a class="link link-hover">Política de privacidad</a>
     </nav>
     <nav>
-      <h6 class="footer-title">Síquenos</h6>
+      <h6 class="footer-title">Síguenos</h6>
       <div class="grid grid-flow-col gap-4">
         <a>
           <svg

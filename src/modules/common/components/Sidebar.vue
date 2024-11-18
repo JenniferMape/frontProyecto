@@ -1,6 +1,6 @@
 <!-- Sidebar.vue -->
 <template>
-  <aside class="w-1/4 bg-white shadow-md p-6 rounded-lg">
+  <aside class="w-1/4 bg-base-100 shadow-md p-6 rounded-lg">
     <h2 class="font-bold text-xl mb-6">Ajustes</h2>
     <ul class="menu">
       <!-- <li>
