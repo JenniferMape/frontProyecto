@@ -66,7 +66,7 @@
         v-model="newPrice"
         type="number"
         class="input input-bordered"
-           placeholder="Ej: 8.00€"
+        placeholder="Ej: 8.00€"
         min="0"
         step="0.10"
       />
@@ -157,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, onUnmounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import { tesloApi } from '@/api/tesloApi';
 import { useRouter } from 'vue-router';
@@ -240,7 +240,9 @@ onMounted(() => {
     resetForm(); // Reinicia los campos del formulario si no hay `offerId`
   }
 });
-
+onUnmounted(() => {
+  resetForm();
+});
 // Resetea los valores de los campos cuando se está creando una nueva oferta
 const resetForm = () => {
   offerTitle.value = '';
@@ -335,9 +337,9 @@ const createOfferPayload = async () => {
   formData.append('description_offer', offerDescription.value);
   formData.append('start_date_offer', formatDateTime(startDate.value));
   formData.append('end_date_offer', formatDateTime(endDate.value));
-  formData.append('discount_code_offer', discountCode.value || null);
-  formData.append('web_offer', offerWebsite.value || null);
-  formData.append('address_offer', offerAddress.value || null);
+  formData.append('discount_code_offer', discountCode.value);
+  formData.append('web_offer', offerWebsite.value);
+  formData.append('address_offer', offerAddress.value);
 
   if (offerImage.value) {
     formData.append('image_offer', offerImage.value);
@@ -347,9 +349,9 @@ const createOfferPayload = async () => {
     const response = await tesloApi.post('/offer', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-
-    if (response.status === 201) {
-      toast.success(response.message);
+    console.log(response.data.message);
+    if (response.data.status === 201) {
+      toast.success(response.data.message);
       router.push({ name: 'companyOffers' });
     } else {
       toast.error(`Error: ${response.data.error}`);
@@ -358,6 +360,7 @@ const createOfferPayload = async () => {
     toast.error('Hubo un error al enviar la oferta.');
   }
 };
+
 const updateOfferPayload = async () => {
   const formData = new FormData();
   formData.append('id', props.offerId);
@@ -369,9 +372,9 @@ const updateOfferPayload = async () => {
   formData.append('description_offer', offerDescription.value);
   formData.append('start_date_offer', formatDateTime(startDate.value));
   formData.append('end_date_offer', formatDateTime(endDate.value));
-  formData.append('discount_code_offer', discountCode.value || null);
-  formData.append('web_offer', offerWebsite.value || null);
-  formData.append('address_offer', offerAddress.value || null);
+  formData.append('discount_code_offer', discountCode.value);
+  formData.append('web_offer', offerWebsite.value);
+  formData.append('address_offer', offerAddress.value);
 
   if (offerImage.value) {
     formData.append('image_offer', offerImage.value);
@@ -382,8 +385,8 @@ const updateOfferPayload = async () => {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    if (response.status === 200) {
-      toast.success(response.message);
+    if (response.data.status === 200) {
+      toast.success(response.data.message);
       router.push({ name: 'companyOffers' });
     } else {
       toast.error(`Error: ${response.data.error}`);
@@ -396,8 +399,8 @@ const deleteOffer = async () => {
   try {
     const response = await tesloApi.delete(`/offer?id=${props.offerId}`);
 
-    if (response.status === 200) {
-      toast.success(response.message);
+    if (response.data.status === 200) {
+      toast.success(response.data.message);
       router.push({ name: 'companyOffers' });
     } else {
       toast.error(`Error: ${response.data.error}`);

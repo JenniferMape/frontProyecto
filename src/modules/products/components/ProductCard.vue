@@ -13,28 +13,28 @@
     <div class="w-2/3 p-4 flex flex-col justify-between">
       <!-- Sección del tiempo en la esquina superior derecha -->
       <div class="flex justify-between">
-
         <h2 class="text-md font-bold text-neutral line-clamp-1">{{ product.title_offer }}</h2>
         <span class="text-sm text-gray-400 ml-auto">Fin oferta: {{ formattedTime }}</span>
       </div>
 
-      <!-- Título del producto -->
-
       <!-- Precio -->
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-lg font-semibold text-primary">{{ product.price_offer }}€</span>
-        </div>
+      <div class="text-2xl font-semibold text-orange-500 mb-2">
+        {{ product.new_price_offer }} €
+        <span class="line-through text-gray-500 text-lg ml-2"
+          >{{ product.original_price_offer }}€</span
+        >
+        <span class="text-lg text-green-600">(-{{ discountPercentage }}%)</span>
       </div>
-
       <!-- Descripción del producto -->
       <p class="text-sm text-gray-600 line-clamp-2">{{ product.description_offer }}</p>
 
       <!-- Sección acciones -->
       <div class="flex justify-between items-center mt-2">
         <!-- Botón para ver la oferta -->
-        <!-- <a :href="product.web_offer" target="_blank" class="btn btn-warning btn-sm">Ir al chollo</a> -->
-        <router-link :to="{ name: 'OfferDetail', params: { offerId: product.id } }" class="btn btn-warning btn-sm">
+        <router-link
+          :to="{ name: 'OfferDetail', params: { offerId: product.id } }"
+          class="btn btn-warning btn-sm"
+        >
           Ver oferta
         </router-link>
       </div>
@@ -53,15 +53,23 @@ const props = defineProps({
     default: () => ({
       title_offer: 'Título del producto',
       description_offer: 'Descripción corta del producto...',
-      price_offer: '100.95',
+      new_price_offer: '70.95',
+      original_price_offer: '100.95',
       image_offer: 'https://via.placeholder.com/150',
       web_offer: 'https://due-home.com/aparadores-de-comedor/aparador-baltik.html',
-      start_date:'01/01/2000',
-      end_date:'01/'
+      start_date: '01/01/2000',
+      end_date: '01/',
     }),
   },
 });
-
+const discountPercentage = computed(() => {
+  if (props.product.new_price_offer <= 0 || props.product.original_price_offer <= 0) return 0;
+  return Math.round(
+    ((props.product.original_price_offer - props.product.new_price_offer) /
+      props.product.original_price_offer) *
+      100,
+  );
+});
 // Formatear la fecha
 const formattedTime = computed(() => {
   const endDate = new Date(props.product.end_date);
@@ -78,6 +86,6 @@ const formattedTime = computed(() => {
 
 <style scoped>
 .h-40 {
-  height: 12rem; 
+  height: 12rem;
 }
 </style>

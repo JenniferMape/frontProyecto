@@ -19,7 +19,6 @@
           <ThemeToggle />
         </template>
       </NavBar>
-   
     </header>
 
     <main>

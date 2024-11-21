@@ -3,13 +3,14 @@ export interface Offer {
   id_company_offer: number;
   id_category_offer: number;
   title_offer: string;
-  price_offer: string; // El precio es un string según los datos
-  description_offer: string;
-  start_date_offer?: string; // Si prefieres un tipo Date, puedes convertirlo después
-  end_date_offer?: string;   // Lo mismo para la fecha de fin
-  discount_code_offer?: string | null;
-  image_offer: string;
-  web_offer?: string;
+  new_price_offer: number;
+  original_price_offer: number;
+  description_offer: string | null;
+  start_date_offer: string;
+  end_date_offer: string;
+  discount_code_offer: string | null;
+  image_offer: string | null;
+  web_offer: string | null;
   address_offer?: string | null;
   created_offer?: string;
   updated_offer?: string;

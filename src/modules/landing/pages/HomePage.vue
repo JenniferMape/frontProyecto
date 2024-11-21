@@ -21,7 +21,7 @@ import type { Offer } from '@/modules/products/interfaces/product.interface';
 import NavItems from '@/modules/common/components/NavItems.vue';
 const categoryStore = useCategoryStore();
 const products = ref<Offer[]>([]);
-const noOffers = ref(false); // Variable para manejar el estado sin ofertas
+const noOffers = ref(false);
 
 const loadOffers = async () => {
   const category = categoryStore.selectedCategoryId;
@@ -33,12 +33,13 @@ const loadOffers = async () => {
       id: offer.id,
       title_offer: offer.title_offer,
       description_offer: offer.description_offer,
-      price_offer: offer.price_offer,
+      new_price_offer: offer.new_price_offer,
+      original_price_offer: offer.original_price_offer,
       image_offer: offer.image_offer,
       web_offer: offer.web_offer,
       end_date: offer.end_date_offer,
     }));
-    noOffers.value = products.value.length === 0; // Actualiza noOffers si la lista está vacía
+    noOffers.value = products.value.length === 0;
   } catch (error: any) {
     if (error.response && error.response?.status === 404) {
       noOffers.value = true;
