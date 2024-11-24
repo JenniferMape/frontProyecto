@@ -1,13 +1,13 @@
 <!-- SearchBar.vue -->
 <template>
-  <form action="/search" method="get" class="relative flex-grow max-w-md mx-auto">
+  <div class="relative flex-grow max-w-md mx-auto">
     <label class="input input-bordered flex items-center gap-2 w-full">
       <input
+        v-model="query"
         type="text"
-        class="grow pl-8 pr-2 w-full"
-        placeholder="Buscar..."
-        aria-label="Buscar"
-        v-model="searchTerm"
+        placeholder="Buscar ofertas..."
+        class="input input-bordered"
+        @keydown.enter="emitSearch"
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,11 +23,21 @@
         />
       </svg>
     </label>
-  </form>
+  </div>
 </template>
-
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const searchTerm = ref('');
+// Estado reactivo para el input
+const query = ref('');
+
+// Definir los eventos que se van a emitir
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: string): void;
+}>();
+
+// Emitir el valor al presionar Enter
+const emitSearch = () => {
+  emit('update:modelValue', query.value); // Emite el valor de búsqueda
+};
 </script>

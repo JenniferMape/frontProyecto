@@ -1,5 +1,4 @@
 <template>
-  <!-- component -->
   <section class="text-gray-600 body-font relative flex flex-1 h-full">
     <div class="absolute inset-0 bg-gray-300">
       <iframe
@@ -49,3 +48,4 @@
     </div>
   </section>
 </template>
+<script setup lang="ts"></script>

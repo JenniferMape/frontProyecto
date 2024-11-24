@@ -1,11 +1,6 @@
 <template>
   <!-- User's Offers -->
   <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="font-bold text-xl">Mis Ofertas</h2>
-      <button @click="goToNewOffer" class="btn btn-primary">Subir Nueva Oferta</button>
-    </div>
-
     <div v-if="paginatedOffers.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div
         v-for="offer in paginatedOffers"
@@ -22,25 +17,21 @@
         <!-- Contenido de la Oferta -->
         <div class="flex-grow">
           <!-- Título -->
-          <h3 class="font-bold text-lg mb-2 line-clamp-2 h-[3rem]">
+          <h3 class="font-bold text-lg mb-2 line-clamp-2 h-[3.5rem]">
             {{ offer.title_offer }}
           </h3>
-
-          <!-- Categoría -->
-          <p class="text-sm text-gray-600 mb-2">Categoría: {{ offer.category_offer_name }}</p>
-
           <!-- Fecha -->
           <p class="text-sm text-gray-600 mb-4">
             Fecha: {{ offer.start_date_offer }} - {{ offer.end_date_offer }}
           </p>
         </div>
 
-        <!-- Enlace de edición -->
+        <!-- Botón -->
         <router-link
-          :to="{ name: 'formOffer', params: { offerId: offer.id } }"
-          class="text-blue-500 hover:underline mt-auto"
+          :to="{ name: 'OfferDetail', params: { offerId: offer.id } }"
+          class="btn btn-warning btn-sm mt-auto"
         >
-          Editar Oferta
+          Ver oferta
         </router-link>
       </div>
     </div>
@@ -75,11 +66,10 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/composables/useAuthAction';
 
 const authStore = useAuthStore();
-const companyId = authStore.user?.id;
+const userId = authStore.user?.id;
 
 // Variables para manejar las ofertas, categorías y la paginación
 const offers = ref([]);
-let categoryMap = {};
 const currentPage = ref(1);
 const offersPerPage = 6;
 
@@ -93,44 +83,24 @@ function formatDate(dateStr) {
   });
 }
 
-// Función para obtener las categorías desde la base de datos
-const loadCategories = async () => {
-  try {
-    const response = await tesloApi.get('/category'); // Ajusta la ruta según tu API
-    if (response.data.status === 200) {
-      categoryMap = response.data.result.reduce((map, category) => {
-        map[category.id] = category.name_category;
-        return map;
-      }, {});
-    } else {
-      console.error('Error al obtener las categorías:', response.data.message);
-    }
-  } catch (error) {
-    console.error('Error al obtener categorías:', error.response?.data || error.message);
-  }
-};
-
 // Función para obtener las ofertas de la compañía y procesarlas
 const getOffersByCompany = async () => {
-  // Asegura que las categorías estan cargadas antes de procesar ofertas
-  if (!Object.keys(categoryMap).length) {
-    await loadCategories();
-  }
-
   try {
-    const response = await tesloApi.get(`/offer?filter=type:offer_company:${companyId}`);
+    const response = await tesloApi.get(`/favorite/${userId}`, {
+      params: { details: true },
+    });
+    console.log(response.data.result);
     if (response.data.status === 200) {
       offers.value = response.data.result.map((offer) => ({
         ...offer,
         start_date_offer: formatDate(offer.start_date_offer),
         end_date_offer: formatDate(offer.end_date_offer),
-        category_offer_name: categoryMap[offer.id_category_offer] || 'Categoría desconocida',
       }));
     } else {
       console.error('Error al obtener las ofertas:', response.data.message);
     }
   } catch (error) {
-    console.error('Error al obtener ofertas:', error.response?.data || error.message);
+    console.error('Error al verificar si es favorito:', error);
   }
 };
 
@@ -152,7 +122,6 @@ const changePage = (page) => {
 
 // Llamar a la función para obtener las ofertas y categorías al montar el componente
 onMounted(async () => {
-  await loadCategories();
   await getOffersByCompany();
 });
 
@@ -168,9 +137,6 @@ watch(
 );
 
 const router = useRouter();
-const goToNewOffer = () => {
-  router.push({ name: 'formOffer' });
-};
 </script>
 
 <style scoped>

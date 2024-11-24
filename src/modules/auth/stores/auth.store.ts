@@ -115,6 +115,7 @@ export const useAuthStore = defineStore('auth', () => {
     username: computed(() => user.value ?? ''),
     isAdmin: computed(() => user.value?.type_user.includes('admin') ?? false),
     isCompany: computed(() => user.value?.type_user.includes('COMPANY') ?? false),
+    isClient: computed(() => user.value?.type_user.includes('CLIENT') ?? false),
 
     // Actions
     login,
