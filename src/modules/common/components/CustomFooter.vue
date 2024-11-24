@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer bg-secondary-content  p-10 sticky bottom-0 text-center transition-opacity duration-300"
+    class="footer bg-secondary-content p-10 sticky bottom-0 text-center transition-opacity duration-300"
     :class="{ 'opacity-100': showFooter, 'opacity-0': !showFooter }"
   >
     <aside>
@@ -11,13 +11,15 @@
     </aside>
     <nav>
       <h6 class="footer-title">Empresa</h6>
-      <a class="link link-hover">Nosotros</a>
+      <router-link :to="{ name: 'us' }" class="link link-hover">Nosotros </router-link>
       <router-link :to="{ name: 'contact' }" class="link link-hover">Contacto </router-link>
     </nav>
     <nav>
       <h6 class="footer-title">Legal</h6>
-      <a class="link link-hover">Términos de uso</a>
-      <a class="link link-hover">Política de privacidad</a>
+      <router-link :to="{ name: 'terms' }" class="link link-hover">Términos de uso </router-link>
+      <router-link :to="{ name: 'privacy' }" class="link link-hover"
+        >Política de privacidad
+      </router-link>
     </nav>
     <nav>
       <h6 class="footer-title">Síguenos</h6>

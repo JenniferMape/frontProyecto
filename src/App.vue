@@ -1,6 +1,4 @@
 <template>
-  <!-- <FullScreenLoader v-if="authStore.isChecking" /> -->
-  <!-- <RouterView v-else /> -->
   <RouterView />
 </template>
 

@@ -3,6 +3,11 @@ import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 import NotFound404 from '@/modules/common/pages/NotFound404.vue';
 import HomePage from '@/modules/landing/pages/HomePage.vue';
 import LandingLayout from '@/modules/landing/layouts/LandingLayout.vue';
+import AboutLayout from '@/modules/about/layouts/AboutLayout.vue';
+import ContactPage from '@/modules/about/pages/ContactPage.vue';
+import PrivacyPolicy from '@/modules/about/pages/PrivacyPolicy.vue';
+import TermsOfUse from '@/modules/about/pages/TermsOfUse.vue';
+import AboutUs from '@/modules/about/pages/AboutUs.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,37 +18,49 @@ const router = createRouter({
       component: LandingLayout,
       children: [
         {
-          path: '', // Dejar vacío para que coincida con la ruta '/'
+          path: '',
           name: 'home',
           component: HomePage,
-        },
-        {
-          path: 'contact',
-          name: 'contact',
-          component: () => import('@/modules/landing/pages/ContactPage.vue'),
         },
         {
           path: '/offer/:offerId?',
           name: 'OfferDetail',
           component: () => import('@/modules/offer/pages/offerView.vue'),
           props: (route) => ({
-            offerId: route.params.offerId || null,
+            offerId: Number(route.params.offerId),
           }),
-        }
-        // {
-        //   path: 'pokemon/:id',
-        //   name: 'pokemon',
-        //   beforeEnter: [isAuthenticatedGuard],
-        //   props: (router) => {
-        //     const id = Number(router.params.id);
-        //     return isNaN(id) ? { id: 1 } : { id };
-        //   },
-        //   component: () => import('@/modules/pokemons/pages/PokemonPage.vue')
-        // }
+        },
+      ],
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutLayout,
+      children: [
+        {
+          path: 'us',
+          name: 'us',
+          component: AboutUs,
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: ContactPage,
+        },
+        {
+          path: 'privacy',
+          name: 'privacy',
+          component: PrivacyPolicy,
+        },
+        {
+          path: 'terms',
+          name: 'terms',
+          component: TermsOfUse,
+        },
       ],
     },
 
-    // Authb
+    // Auth
     {
       path: '/auth',
       name: 'auth',
@@ -84,6 +101,12 @@ const router = createRouter({
           component: () => import('@/modules/user/pages/clientPages/ClientProfilePage.vue'),
         },
         {
+          path: 'favoritesOffers',
+          name: 'favoritesOffers',
+          beforeEnter: [isAuthenticatedGuard],
+          component: () => import('@/modules/user/pages/clientPages/FavoritesOffers.vue'),
+        },
+        {
           path: 'companyProfile',
           name: 'companyProfile',
           beforeEnter: [isAuthenticatedGuard],
@@ -102,7 +125,7 @@ const router = createRouter({
           component: () => import('@/modules/user/pages/companyPages/EditOffers.vue'),
           props: (route) => ({
             offerId: route.params.offerId || null,
-            isEditMode: !!route.params.offerId, // isEditMode será true si offerId está presente
+            isEditMode: !!route.params.offerId,
           }),
         },
       ],

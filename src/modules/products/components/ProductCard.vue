@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-base-100 shadow-lg rounded-lg overflow-hidden mb-4 h-40">
+  <div class="flex bg-base-100 shadow-lg rounded-lg overflow-hidden mb-4 h-60">
     <!-- Imagen del producto -->
     <div class="w-1/3">
       <img
@@ -29,22 +29,25 @@
       <p class="text-sm text-gray-600 line-clamp-2">{{ product.description_offer }}</p>
 
       <!-- Sección acciones -->
-      <div class="flex justify-between items-center mt-2">
-        <!-- Botón para ver la oferta -->
-        <router-link
-          :to="{ name: 'OfferDetail', params: { offerId: product.id } }"
-          class="btn btn-warning btn-sm"
-        >
-          Ver oferta
-        </router-link>
-      </div>
+      <template v-if="authStore.isAuthenticated">
+        <div class="flex justify-between items-center mt-2">
+          <!-- Botón para ver la oferta -->
+          <router-link
+            :to="{ name: 'OfferDetail', params: { offerId: product.id } }"
+            class="btn btn-warning btn-sm"
+          >
+            Ver oferta
+          </router-link>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-
+import { useAuthStore } from '@/modules/auth/composables/useAuthAction';
+const authStore = useAuthStore();
 // Recibir los datos del producto
 const props = defineProps({
   product: {
