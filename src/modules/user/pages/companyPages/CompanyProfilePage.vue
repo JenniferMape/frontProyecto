@@ -1,162 +1,130 @@
 <template>
-  <!-- Profile Form -->
-  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
-    <h2 class="font-bold text-xl mb-6">Perfil</h2>
-
-    <!-- Avatar Section -->
-    <div class="flex items-center space-x-6">
-      <div class="avatar">
-        <div class="w-24 h-24 rounded-full">
-          <img :src="authStore.user?.avatar_user || defaultAvatar" alt="Tu avatar" />
+  <section class="w-full bg-base-100 shadow-md p-6 rounded-lg ml-6">
+    <h2 class="font-bold text-2xl mb-8">Perfil</h2>
+    <h3 class="font-medium">Tu avatar</h3>
+    <!-- Avatar -->
+    <div class="flex flex-col items-center mb-8">
+      <div class="avatar mb-4">
+        <div class="w-[250px] h-[250px] rounded-full overflow-hidden">
+          <img
+            :src="authStore.user.avatar_user || defaultAvatar"
+            alt="Tu avatar"
+            class="w-full h-full object-cover"
+          />
         </div>
+      </div>
+      <div class="flex space-x-4">
+        <button @click="$refs.avatarInput.click()" class="btn btn-outline btn-secondary">
+          Reemplazar
+        </button>
+        <button @click="removeAvatar(id)" class="btn btn-outline btn-error">Quitar</button>
+      </div>
+      <p class="text-sm text-center mt-2">Para resultados óptimos utiliza una imagen cuadrada</p>
+      <input type="file" @change="replaceAvatar" class="hidden" ref="avatarInput" />
+      <button
+        @click="updateAvatar(avatar, id)"
+        class="btn btn-sm btn-secondary mt-4"
+        :disabled="!avatar"
+      >
+        Subir Avatar
+      </button>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Nombre de usuario -->
+      <div>
+        <h3 class="font-medium">Tu nombre de usuario</h3>
       </div>
       <div>
-        <input type="file" @change="replaceAvatar" class="hidden" ref="avatarInput" />
-        <button @click="$refs.avatarInput.click()" class="btn btn-outline">Reemplazar</button>
-        <button @click="removeAvatar(id)" class="btn btn-outline btn-error">Quitar</button>
-        <p class="text-sm mt-2">Para resultados óptimos, utiliza una imagen cuadrada</p>
-      </div>
-    </div>
-
-    <button @click="updateAvatar(avatar, id)" class="btn btn-sm mt-4" :disabled="!avatar">
-      Subir Avatar
-    </button>
-
-    <!-- User Details -->
-    <div class="mt-10 space-y-6">
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Tu nombre de usuario</span>
-        </label>
-        <input
-          v-model="username"
-          type="text"
-          :placeholder="authStore.user?.name_user"
-          :class="
-            usernameError
-              ? 'input input-bordered input-error'
-              : username
-                ? 'input input-bordered input-success'
-                : 'input input-bordered'
-          "
-        />
-        <div v-if="usernameError" class="text-red-500 text-sm">
-          El nombre de usuario no puede estar vacío.
-        </div>
-        <button
-          @click="handleChangeUsername"
-          class="btn btn-sm btn-secondary mt-2"
-          :disabled="usernameError"
-        >
+        <p class="text-lg font-bold text-gray-700">{{ authStore.user.name_user }}</p>
+        <button @click="openModal('username')" class="btn btn-info w-full mt-2">
           Cambiar nombre de usuario
         </button>
       </div>
-
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Tu email</span>
-        </label>
-        <input
-          v-model="email"
-          type="email"
-          :placeholder="authStore.user?.email_user"
-          :class="
-            emailError
-              ? 'input input-bordered input-error'
-              : email
-                ? 'input input-bordered input-success'
-                : 'input input-bordered'
-          "
-        />
-        <div v-if="emailError" class="text-red-500 text-sm">
-          Por favor, ingresa un email válido.
-        </div>
-        <button
-          @click="handleChangeEmail"
-          class="btn btn-sm btn-secondary mt-2"
-          :disabled="emailError"
-        >
-          Cambiar email
-        </button>
+      <!--CIF-->
+      <div>
+        <h3 class="font-medium">Tu CIF</h3>
+      </div>
+      <div>
+        <p class="text-lg font-bold text-gray-700">{{ authStore.user.cif_user }}</p>
+        <button @click="openModal('cif')" class="btn btn-info mt-2 w-full">Cambiar cif</button>
+      </div>
+      <!-- Email -->
+      <div>
+        <h3 class="font-medium">Tu email</h3>
+      </div>
+      <div>
+        <p class="text-lg font-bold text-gray-700">{{ authStore.user.email_user }}</p>
+        <button @click="openModal('email')" class="btn btn-info mt-2 w-full">Cambiar email</button>
       </div>
 
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Tu contraseña</span>
-        </label>
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Contraseña"
-          :class="
-            passwordError
-              ? 'input input-bordered input-error'
-              : password
-                ? 'input input-bordered input-success'
-                : 'input input-bordered'
-          "
-        />
-        <div v-if="passwordError" class="text-red-500 text-sm">
-          La contraseña debe tener al menos 8 caracteres.
-        </div>
-        <button
-          @click="handleChangePassword"
-          class="btn btn-sm btn-secondary mt-2"
-          :disabled="passwordError"
-        >
+      <!-- Contraseña -->
+      <div>
+        <h3 class="font-medium">Establecer contraseña</h3>
+      </div>
+      <div>
+        <p class="text-lg font-bold text-gray-700">********</p>
+        <button @click="openModal('password')" class="btn btn-info mt-2 w-full">
           Cambiar contraseña
         </button>
       </div>
 
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Tu CIF</span>
-        </label>
-        <input
-          v-model="cif"
-          type="text"
-          placeholder="Introduce tu CIF"
-          :class="
-            cifError
-              ? 'input input-bordered input-error'
-              : cif
-                ? 'input input-bordered input-success'
-                : 'input input-bordered'
-          "
-        />
-        <div v-if="cifError" class="text-red-500 text-sm">Por favor, ingresa un CIF válido.</div>
-        <button @click="handleChangeCIF" class="btn btn-sm btn-secondary mt-2" :disabled="cifError">
-          Cambiar CIF
+      <!-- Eliminar Cuenta -->
+      <div>
+        <h3 class="font-medium">Eliminar Cuenta</h3>
+      </div>
+      <div>
+        <button @click="showDeleteModal = true" class="btn btn-error px-6 w-full">
+          Eliminar Cuenta
         </button>
       </div>
     </div>
 
-    <!-- Delete Account -->
-    <!-- <div class="mt-10">
-      <button @click="deleteAccount(id)" class="btn btn-error">Eliminar Cuenta</button>
-    </div> -->
- 
-      <!-- Delete Account -->
-      <div class="mt-10">
-      <button @click="showDeleteModal = true" class="btn btn-error">Eliminar Cuenta</button>
-    </div>
-  
- </section>
-  <!-- Confirm Delete Modal -->
-  <div v-if="showDeleteModal" class="modal modal-open">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">Confirmar eliminación de cuenta</h3>
-      <p class="py-4">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
-      <div class="modal-action">
-        <button @click="confirmDeleteAccount" class="btn btn-error">Confirmar</button>
-        <button @click="showDeleteModal = false" class="btn">Cancelar</button>
+    <!-- Modal Editar -->
+    <div v-if="showModal" class="modal modal-open">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Editar {{ fieldLabels[modalField] }}</h3>
+        <input
+          v-model="modalValue"
+          :type="modalField === 'password' ? 'password' : 'text'"
+          class="input input-bordered w-full mt-4"
+          :class="{ 'input-error': modalError }"
+          :placeholder="'Nuevo ' + fieldLabels[modalField]"
+        />
+        <div v-if="modalError" class="text-red-500 text-sm mt-2">
+          {{ modalErrorMessage }}
+        </div>
+        <div class="modal-action">
+          <button
+            @click="saveChanges"
+            class="btn btn-info"
+            :disabled="!modalValue || modalValue.length === 0"
+          >
+            Guardar
+          </button>
+          <button @click="closeModal" class="btn btn-secondary">Cancelar</button>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Modal Confirmación -->
+    <div v-if="showDeleteModal" class="modal modal-open">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg text-red-500">Confirmar eliminación de cuenta</h3>
+        <p class="py-4">
+          ¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer y
+          perderás todos tus datos.
+        </p>
+        <div class="modal-action">
+          <button @click="confirmDeleteAccount" class="btn btn-error">Confirmar</button>
+          <button @click="closeDeleteModal" class="btn">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/stores/auth.store';
 import defaultAvatar from '@/assets/usuario.png';
 import { useToast } from 'vue-toastification';
@@ -164,104 +132,109 @@ import {
   changeUsername,
   changeEmail,
   changePassword,
-  deleteAccount,
   removeAvatar,
   updateAvatar,
   changeCIF,
 } from '@/modules/user/composables/useProfile';
 
-// Acceso al store de autenticación
 const authStore = useAuthStore();
 const toast = useToast();
-// Referencias para los campos de perfil
-const username = ref(authStore.user?.username || '');
-const email = ref(authStore.user?.email || '');
-const password = ref('');
-const avatar = ref(null);
-const cif = ref('');
-const id = authStore.user?.id;
+
+console.log(authStore.user);
+// Modal state
+const showModal = ref(false);
+const modalField = ref('');
+const modalValue = ref('');
+const modalError = ref(false);
+const modalErrorMessage = ref('');
 const showDeleteModal = ref(false);
 
-// Variables de error y estado de color
-const usernameError = ref(false);
-const emailError = ref(false);
-const passwordError = ref(false);
-const cifError = ref(false);
+const fieldLabels = {
+  cif: 'CIF',
+  username: 'nombre de usuario',
+  email: 'correo electrónico',
+  password: 'contraseña',
+};
+// Avatar state
+const avatar = ref(null);
+const id = authStore.user?.id;
 
-// Expresiones regulares
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const cifRegex = /^[A-Z]\d{8}$/;
-
-// Reemplazar avatar
-const replaceAvatar = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    avatar.value = file; // Asignar el archivo seleccionado a la referencia
-  }
+// Functions
+const openModal = (field) => {
+  modalField.value = field;
+  modalValue.value = field === 'password' ? '' : authStore.user[field + '_user'];
+  modalError.value = false;
+  showModal.value = true;
 };
 
-// Watchers para validación en tiempo real
-watch(username, (newValue) => {
-  usernameError.value = !newValue || newValue.trim() === '';
-});
-
-watch(email, (newValue) => {
-  emailError.value = !newValue || !emailRegex.test(newValue);
-});
-
-watch(password, (newValue) => {
-  passwordError.value = !newValue || newValue.length < 8;
-});
-
-watch(cif, (newValue) => {
-  cifError.value = !newValue || !cifRegex.test(newValue);
-});
-
-// Funciones de cambio
-const handleChangeUsername = async () => {
-  if (usernameError.value) {
-    toast.error('Por favor, ingresa un nombre de usuario válido.');
-    return;
-  }
-  await changeUsername(username.value, id);
-  username.value = '';
+const closeModal = () => {
+  showModal.value = false;
+  modalField.value = '';
+  modalValue.value = '';
 };
 
-const handleChangeEmail = async () => {
-  if (emailError.value) {
-    toast.error('Por favor, ingresa un email válido.');
-    return;
+const saveChanges = async () => {
+  // Validación del campo según el tipo
+  if (modalField.value === 'username') {
+    if (!modalValue.value.trim()) {
+      modalError.value = true;
+      modalErrorMessage.value = 'El nombre de usuario no puede estar vacío.';
+      return;
+    }
+    if (modalValue.value.length < 3) {
+      modalError.value = true;
+      modalErrorMessage.value = 'El nombre de usuario debe tener al menos 3 caracteres.';
+      return;
+    }
   }
-  await changeEmail(email.value, id);
-  email.value = '';
-};
 
-const handleChangePassword = async () => {
-  if (passwordError.value) {
-    toast.error('La contraseña debe tener al menos 8 caracteres.');
-    return;
+  if (modalField.value === 'email') {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(modalValue.value)) {
+      modalError.value = true;
+      modalErrorMessage.value = 'Por favor ingresa un correo electrónico válido.';
+      return;
+    }
   }
-  await changePassword(password.value, id);
-  password.value = '';
-};
 
-const handleChangeCIF = async () => {
-  if (cifError.value) {
-    toast.error('Por favor, ingresa un CIF válido.');
-    return;
+  if (modalField.value === 'password') {
+    if (modalValue.value.length < 6) {
+      modalError.value = true;
+      modalErrorMessage.value = 'La contraseña debe tener al menos 6 caracteres.';
+      return;
+    }
+    if (modalField.value === 'cif') {
+      const cifRegex = /^[A-Z]\d{8}$/;
+      if (!cifRegex.test(modalValue.value)) {
+        modalError.value = true;
+        modalErrorMessage.value = 'El CIF debe tener una letra y 8 dígitos.';
+        return;
+      }
+    }
   }
-  await changeCIF(cif.value, id);
-  cif.value = '';
+  // Si pasa la validación, continuar con la actualización
+
+  if (modalField.value === 'username') await changeUsername(modalValue.value, id);
+  if (modalField.value === 'email') await changeEmail(modalValue.value, id);
+  if (modalField.value === 'password') await changePassword(modalValue.value, id);
+  if (modalField.value === 'cif') await changeCIF(modalValue.value, id);
+
+  closeModal();
 };
-// Función para confirmar la eliminación
-const confirmDeleteAccount = async () => {
-  await deleteAccount(id);
+const closeDeleteModal = () => {
   showDeleteModal.value = false;
 };
+const confirmDeleteAccount = async () => {
+  try {
+    await deleteAccount(id);
+    toast.success('Cuenta eliminada exitosamente.');
+    showDeleteModal.value = false;
+  } catch (error) {
+    toast.error('Error al eliminar la cuenta. Por favor, inténtalo de nuevo.');
+  }
+};
+const replaceAvatar = (event) => {
+  const file = event.target.files[0];
+  if (file) avatar.value = file;
+};
 </script>
-
-<style scoped>
-.input-error {
-  border-color: red; /* Cambia el color del borde a rojo */
-}
-</style>
