@@ -2,7 +2,11 @@
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        parkinsans: ['Parkinsans', 'sans-serif'],
+      },
+    },
   },
   daisyui: {
     themes: [
@@ -10,28 +14,26 @@ export default {
         lightTheme: {
           primary: '#8CBA51',
           secondary: '#424242',
-          accent: '#779b33',
+          accent: '#FBBF24',
           neutral: '#424242',
           'base-100': '#FFFFFF',
-          info: '#48CFCB',
+          info: '#DEFF8B',
           success: '#779b33',
           warning: '#FBBF24',
           error: '#EF4444',
-          highlight: '#FFD700',
         },
       },
       {
         darkTheme: {
           primary: '#8CBA51',
           secondary: '#F5F5F5',
-          accent: '#DEFF8B',
+          accent: '#FBBF24',
           neutral: '#EDEDED',
           'base-100': '#121212',
-          info: '#48CFCB',
+          info: '#DEFF8B',
           success: '#779b33',
           warning: '#FBBF24',
           error: '#EF4444',
-          highlight: '#FF4500',
         },
       },
     ],

@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-base-200 min-h-screen">
+  <div class="flex flex-col min-h-screen bg-base-200">
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </router-view>
-    <footer>
+    <footer class="mt-auto">
       <CustomFooter />
     </footer>
   </div>

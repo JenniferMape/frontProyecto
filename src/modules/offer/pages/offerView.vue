@@ -103,7 +103,7 @@
             :href="offerWebsite"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn-primary w-full"
+            class="btn btn-accent w-full"
             :class="{ 'btn-disabled': !offerWebsite }"
             :aria-disabled="!offerWebsite"
           >

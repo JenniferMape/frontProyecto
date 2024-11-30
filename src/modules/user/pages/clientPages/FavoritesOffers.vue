@@ -29,7 +29,7 @@
         <!-- Botón -->
         <router-link
           :to="{ name: 'OfferDetail', params: { offerId: offer.id } }"
-          class="btn btn-warning btn-sm mt-auto"
+          class="btn btn-accent btn-sm mt-auto"
         >
           Ver oferta
         </router-link>
@@ -89,7 +89,7 @@ const getOffersByCompany = async () => {
     const response = await tesloApi.get(`/favorite/${userId}`, {
       params: { details: true },
     });
-    console.log(response.data.result);
+
     if (response.data.status === 200) {
       offers.value = response.data.result.map((offer) => ({
         ...offer,

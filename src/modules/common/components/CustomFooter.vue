@@ -74,11 +74,15 @@ import { ref, onMounted, onUnmounted } from 'vue';
 const showFooter = ref(false);
 
 const checkScroll = () => {
-  const scrollY = window.scrollY + window.innerHeight;
+  const scrollPosition = window.scrollY + window.innerHeight;
   const documentHeight = document.documentElement.scrollHeight;
 
-  // Muestra el footer solo si se ha llegado al final de la página
-  showFooter.value = scrollY >= documentHeight;
+  // Mostrar el footer solo si hemos llegado al final
+  if (scrollPosition >= documentHeight - 100) {
+    showFooter.value = true;
+  } else {
+    showFooter.value = false;
+  }
 };
 
 onMounted(() => {

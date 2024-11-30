@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200 min-h-screen">
+  <div class="flex flex-col min-h-screen bg-base-200">
     <header class="shadow bg-highlight">
       <NavBar>
         <template #logo>
@@ -27,7 +27,9 @@
         </router-view>
       </main>
     </div>
-    <CustomFooter />
+    <footer class="mt-auto">
+      <CustomFooter />
+    </footer>
   </div>
 </template>
 
