@@ -25,6 +25,7 @@ const router = createRouter({
         {
           path: '/offer/:offerId?',
           name: 'OfferDetail',
+          beforeEnter: [isAuthenticatedGuard],
           component: () => import('@/modules/offer/pages/offerView.vue'),
           props: (route) => ({
             offerId: Number(route.params.offerId),

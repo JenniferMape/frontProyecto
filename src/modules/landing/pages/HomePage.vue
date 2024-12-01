@@ -87,6 +87,8 @@ const loadOffers = async () => {
       image_offer: offer.image_offer,
       web_offer: offer.web_offer,
       end_date: offer.end_date_offer,
+      category_name: offer.category_name,
+      company_name: offer.company_name,
     }));
     noOffers.value = products.value.length === 0;
   } catch (error: any) {

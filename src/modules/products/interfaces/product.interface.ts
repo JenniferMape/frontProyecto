@@ -15,4 +15,6 @@ export interface Offer {
   address_offer?: string | null;
   created_offer?: string;
   updated_offer?: string;
+  category_name?: string;
+  company_name?: string;
 }

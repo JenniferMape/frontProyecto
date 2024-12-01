@@ -1,6 +1,6 @@
 <template>
   <!-- User's Offers -->
-  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
+  <section class="w-full bg-base-100 shadow-md p-6 rounded-lg ml-6 min-h-screen">
     <div v-if="paginatedOffers.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div
         v-for="offer in paginatedOffers"
