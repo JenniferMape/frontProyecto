@@ -1,6 +1,5 @@
-<!-- Sidebar.vue -->
 <template>
-  <aside class="w-1/4 bg-base-100 shadow-md p-6 rounded-lg">
+  <aside class="w-1/4 bg-base-100 shadow-md p-6 rounded-lg min-h-screen">
     <h2 class="font-bold text-xl mb-6">Ajustes</h2>
     <ul class="menu">
       <li v-if="isCompany">
@@ -8,7 +7,7 @@
           :to="{ name: 'companyProfile' }"
           :class="{ active: $route.name === 'companyProfile' }"
         >
-          Perfil
+          <i class="fa-solid fa-user-pen mr-2"></i> Perfil
         </RouterLink>
       </li>
       <li v-else>
@@ -16,7 +15,7 @@
           :to="{ name: 'clientProfile' }"
           :class="{ active: $route.name === 'clientProfile' }"
         >
-          Perfil
+          <i class="fa-solid fa-user-pen mr-2"></i> Perfil
         </RouterLink>
       </li>
       <li v-if="isCompany">
@@ -24,7 +23,7 @@
           :to="{ name: 'companyOffers' }"
           :class="{ active: $route.name === 'companyOffers' }"
         >
-          Mis Ofertas
+          <i class="fas fa-briefcase mr-2"></i> Mis Ofertas
         </RouterLink>
       </li>
       <li v-else>
@@ -32,7 +31,7 @@
           :to="{ name: 'favoritesOffers' }"
           :class="{ active: $route.name === 'favoritesOffers' }"
         >
-          Mis Favoritos
+          <i class="fas fa-heart mr-2"></i> Mis Favoritos
         </RouterLink>
       </li>
     </ul>

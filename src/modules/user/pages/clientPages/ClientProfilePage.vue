@@ -1,7 +1,7 @@
 <template>
-  <section class="w-full bg-base-100 shadow-md p-6 rounded-lg ml-6">
+  <section class="w-full bg-base-100 shadow-md p-6 rounded-lg ml-6 min-h-screen">
     <h2 class="font-bold text-2xl mb-8">Perfil</h2>
-    <h3 class="font-medium">Tu avatar</h3>
+    <h3 class="font-medium"><i class="fas fa-user mr-2"></i> Tu avatar</h3>
     <!-- Avatar -->
     <div class="flex flex-col items-center mb-8">
       <div class="avatar mb-4">
@@ -28,41 +28,43 @@
     <div class="grid grid-cols-2 gap-4">
       <!-- Nombre de usuario -->
       <div>
-        <h3 class="font-medium">Tu nombre de usuario</h3>
+        <h3 class="font-medium"><i class="fas fa-signature mr-2"></i> Tu nombre de usuario</h3>
       </div>
       <div>
-        <p class="text-lg font-bold text-gray-700">{{ authStore.user.name_user }}</p>
-        <button @click="openModal('username')" class="btn btn-info w-full mt-2">
+        <p class="text-lg font-bold text-neutral">{{ authStore.user.name_user }}</p>
+        <button @click="openModal('username')" class="btn btn-outline btn-secondary w-full mt-2">
           Cambiar nombre de usuario
         </button>
       </div>
 
       <!-- Email -->
       <div>
-        <h3 class="font-medium">Tu email</h3>
+        <h3 class="font-medium"><i class="fas fa-envelope mr-2"></i>Tu email</h3>
       </div>
       <div>
-        <p class="text-lg font-bold text-gray-700">{{ authStore.user.email_user }}</p>
-        <button @click="openModal('email')" class="btn btn-info mt-2 w-full">Cambiar email</button>
+        <p class="text-lg font-bold text-neutral">{{ authStore.user.email_user }}</p>
+        <button @click="openModal('email')" class="btn btn-outline btn-secondary mt-2 w-full">
+          Cambiar email
+        </button>
       </div>
 
       <!-- Contraseña -->
       <div>
-        <h3 class="font-medium">Establecer contraseña</h3>
+        <h3 class="font-medium"><i class="fas fa-key mr-2"></i>Establecer contraseña</h3>
       </div>
       <div>
-        <p class="text-lg font-bold text-gray-700">********</p>
-        <button @click="openModal('password')" class="btn btn-info mt-2 w-full">
+        <p class="text-lg font-bold text-neutral">********</p>
+        <button @click="openModal('password')" class="btn btn-outline btn-secondary mt-2 w-full">
           Cambiar contraseña
         </button>
       </div>
 
       <!-- Eliminar Cuenta -->
       <div>
-        <h3 class="font-medium">Eliminar Cuenta</h3>
+        <h3 class="font-medium"><i class="fas fa-trash-can mr-2"></i> Eliminar Cuenta</h3>
       </div>
       <div>
-        <button @click="showDeleteModal = true" class="btn btn-error px-6 w-full">
+        <button @click="showDeleteModal = true" class="btn btn-outline btn-error px-6 w-full">
           Eliminar Cuenta
         </button>
       </div>
@@ -105,7 +107,7 @@
         </p>
         <div class="modal-action">
           <button @click="confirmDeleteAccount" class="btn btn-error">Confirmar</button>
-          <button @click="closeDeleteModal" class="btn">Cancelar</button>
+          <button @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
         </div>
       </div>
     </div>

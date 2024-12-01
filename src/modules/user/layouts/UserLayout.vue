@@ -38,7 +38,6 @@ import NavBar from '@/modules/common/components/NavBar/NavBar.vue';
 import LogoNav from '@/modules/common/components/NavBar/components/LogoNav.vue';
 import ThemeToggle from '@/modules/common/components/NavBar/components/ThemeToggle.vue';
 import CustomFooter from '@/modules/common/components/CustomFooter.vue';
-import SearchBar from '@/modules/common/components/NavBar/components/SearchBar.vue';
 import AuthButtons from '@/modules/common/components/NavBar/components/AuthButtons/AuthButtons.vue';
 import Sidebar from '@/modules/common/components/Sidebar.vue';
 import { useAuthStore } from '@/modules/auth/stores/auth.store';

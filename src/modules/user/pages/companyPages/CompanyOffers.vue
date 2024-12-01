@@ -1,9 +1,9 @@
 <template>
   <!-- User's Offers -->
-  <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
+  <section class="bg-base-100 shadow-md p-6 rounded-lg ml-6 min-h-screen w-full">
     <div class="flex justify-between items-center mb-6">
       <h2 class="font-bold text-xl">Mis Ofertas</h2>
-      <button @click="goToNewOffer" class="btn btn-primary">Subir Nueva Oferta</button>
+      <button @click="goToNewOffer" class="btn btn-info">Subir Nueva Oferta</button>
     </div>
 
     <div v-if="paginatedOffers.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -38,7 +38,7 @@
         <!-- Enlace de edición -->
         <router-link
           :to="{ name: 'formOffer', params: { offerId: offer.id } }"
-          class="text-blue-500 hover:underline mt-auto"
+          class="btn btn-info"
         >
           Editar Oferta
         </router-link>

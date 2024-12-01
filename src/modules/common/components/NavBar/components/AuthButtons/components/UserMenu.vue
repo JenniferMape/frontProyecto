@@ -14,16 +14,21 @@
     >
       <template v-if="authStore.user?.type_user === 'CLIENT'">
         <li>
-          <router-link :to="{ name: 'clientProfile' }">Perfil</router-link>
+          <router-link :to="{ name: 'clientProfile' }">
+            <i class="fa-solid fa-user mr-2"></i> Perfil</router-link
+          >
         </li>
       </template>
       <template v-if="authStore.user?.type_user === 'COMPANY'">
         <li>
-          <router-link :to="{ name: 'companyProfile' }">Perfil</router-link>
+          <router-link :to="{ name: 'companyProfile' }">
+            <i class="fa-solid fa-user mr-2"></i>Perfil</router-link
+          >
         </li>
       </template>
-      <!-- <li><a>Ajustes</a></li> -->
-      <li @click="authStore.logout()"><a>Cerrar Sesión</a></li>
+      <li @click="authStore.logout()">
+        <a> <i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar Sesión</a>
+      </li>
     </ul>
   </div>
 </template>

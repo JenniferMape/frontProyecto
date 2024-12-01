@@ -25,19 +25,8 @@
         @click="goBack"
         class="btn btn-ghost absolute top-6 left-6 text-secondary text-sm font-bold flex items-center z-10"
       >
-        <!-- Icono de flecha -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 mr-1"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10 18a1 1 0 0 1-.707-.293l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 1.414L4.414 10l6.293 6.293A1 1 0 0 1 10 18Z"
-            clip-rule="evenodd"
-          />
-        </svg>
+        <!-- Icono de Font Awesome -->
+        <font-awesome-icon icon="arrow-left" class="h-5 w-5 mr-1" />
         Volver
       </button>
 
@@ -53,25 +42,8 @@
             :class="{ 'text-red-500': isFavorite, 'text-gray-500': !isFavorite }"
             aria-label="Marcar como favorita"
           >
-            <!-- Icono de corazón -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              :stroke="isFavorite ? 'none' : 'currentColor'"
-              :fill="isFavorite ? 'red' : 'none'"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                :d="
-                  isFavorite
-                    ? 'M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z'
-                    : 'M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z'
-                "
-              />
-            </svg>
+            <!-- Icono de Font Awesome -->
+            <font-awesome-icon :icon="[isFavorite ? 'fas' : 'far', 'heart']" class="h-6 w-6" />
           </button>
         </div>
       </div>
@@ -87,15 +59,13 @@
 
       <!-- Información de la oferta -->
       <div class="card-body p-6">
-        <h2 class="card-title text-2xl font-bold">{{ offerTitle }}</h2>
+        <h2 class="card-title text-2xl text-neutral font-bold">{{ offerTitle }}</h2>
 
         <div class="text-2xl font-semibold text-orange-500 mb-2">
           {{ newPrice }}€
-          <span class="line-through text-gray-500 text-lg ml-2">{{ originalPrice }} €</span>
-          <span class="text-lg text-green-600">(-{{ discountPercentage }}%)</span>
+          <span class="line-through text-neutral text-lg ml-2">{{ originalPrice }} €</span>
+          <span class="text-lg text-primary">(-{{ discountPercentage }}%)</span>
         </div>
-
-        <p class="text-gray-600">{{ offerCategoryLabel }}</p>
 
         <!-- Botón para ir al enlace de la oferta -->
         <div class="card-actions mt-4">
@@ -110,30 +80,69 @@
             Ir al chollo
           </a>
         </div>
+        <div class="flex justify-between mt-4 gap-4">
+          <!-- Fecha de comienzo -->
+          <span
+            class="text-sm text-gray-400 tooltip tooltip-bottom"
+            data-tip="Fecha de comienzo oferta"
+          >
+            <font-awesome-icon icon="calendar-day" class="mr-1" />
+            {{ formattedStartDate }}
+          </span>
 
+          <!-- Fecha de fin -->
+          <span class="text-sm text-gray-400 tooltip tooltip-bottom" data-tip="Fecha de fin oferta">
+            <font-awesome-icon icon="clock" class="mr-1" />
+            {{ formattedEndDate }}
+          </span>
+
+          <!-- Categoría -->
+          <span class="text-sm text-gray-400 tooltip tooltip-bottom" data-tip="Categoría">
+            <font-awesome-icon icon="tag" class="mr-1" />
+            {{ offerCategoryLabel }}
+          </span>
+
+          <!-- Empresa -->
+          <span class="text-sm text-gray-400 tooltip tooltip-bottom" data-tip="Empresa">
+            <font-awesome-icon icon="shop" class="mr-1" />
+            {{ offerCompany }}
+          </span>
+        </div>
+
+        <div class="divider mt-0 mb-0 h-0"></div>
         <!-- Detalles adicionales de la oferta -->
         <div class="bg-base-200 rounded-lg p-4 mt-6">
           <h3 class="font-semibold text-lg">Descripción de la oferta</h3>
-          <p class="text-gray-600 mt-2">{{ offerDescription }}</p>
+          <p class="text-neutral mt-2">{{ offerDescription }}</p>
         </div>
 
         <!-- Información adicional -->
         <div class="grid grid-cols-2 gap-4 mt-6">
-          <div>
-            <h4 class="font-semibold text-md">Fecha de inicio:</h4>
-            <p>{{ formattedStartDate }}</p>
+          <!-- Código de descuento -->
+          <div class="p-4 border border-gray-300 rounded-lg bg-base-200 shadow-sm">
+            <h4 class="font-semibold text-md text-secondary mb-2">Código de descuento:</h4>
+            <div class="flex items-center space-x-2">
+              <p class="text-lg text-primary font-medium">
+                {{ discountCode || 'No disponible' }}
+              </p>
+              <button
+                v-if="discountCode"
+                @click="copyToClipboard(discountCode)"
+                class="btn btn-sm btn-secondary btn-ghost tooltip tooltip-bottom"
+                data-tip="Copiar código"
+                aria-label="Copiar código"
+              >
+                <font-awesome-icon icon="clipboard" />
+              </button>
+            </div>
           </div>
-          <div>
-            <h4 class="font-semibold text-md">Fecha de finalización:</h4>
-            <p>{{ formattedEndDate }}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-md">Código de descuento:</h4>
-            <p>{{ discountCode || 'No disponible' }}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-md">Dirección:</h4>
-            <p>{{ offerAddress || 'No disponible' }}</p>
+
+          <!-- Dirección -->
+          <div class="p-4 border border-gray-300 rounded-lg bg-base-200 shadow-sm">
+            <h4 class="font-semibold text-md text-secondary mb-2">Dirección:</h4>
+            <p class="text-sm text-secondary font-medium">
+              {{ offerAddress || 'No disponible' }}
+            </p>
           </div>
         </div>
       </div>
@@ -150,6 +159,7 @@ import { useAuthStore } from '@/modules/auth/stores/auth.store';
 import { useToast } from 'vue-toastification';
 import { tesloApi } from '@/api/tesloApi';
 import { useRouter } from 'vue-router';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import type { Offer } from '@/modules/products/interfaces/product.interface';
 
 // Componentes
@@ -185,22 +195,12 @@ const offerDescription = ref<string>('');
 const discountCode = ref<string>('');
 const offerImageUrl = ref<string | null>(null);
 const offerWebsite = ref<string>('');
+const offerCompany = ref<string>('');
 const offerAddress = ref<string>('');
 const isFavorite = ref<boolean>(false);
 const userId = authStore.user?.id;
 const favoriteId = ref<number | null>(null);
-
-// Categorías
-const categories = [
-  { value: 1, label: 'Alimentación' },
-  { value: 2, label: 'Automoción' },
-  { value: 3, label: 'Electrónica' },
-  { value: 4, label: 'Hogar' },
-  { value: 5, label: 'Moda' },
-  { value: 6, label: 'Ocio y Cultura' },
-  { value: 7, label: 'Salud' },
-];
-
+const toast = useToast();
 // ------------------------
 // Métodos
 // ------------------------
@@ -210,9 +210,7 @@ const loadOfferData = async () => {
     const offer: Offer = response.data.result;
 
     offerTitle.value = offer.title_offer || 'Título no disponible';
-    offerCategoryLabel.value =
-      categories.find((cat) => cat.value === offer.id_category_offer)?.label ||
-      'Categoría no disponible';
+    offerCategoryLabel.value = offer.category_name || 'Categoría no disponible';
     formattedStartDate.value = formatDate(offer.start_date_offer);
     formattedEndDate.value = formatDate(offer.end_date_offer);
     newPrice.value = offer.new_price_offer || 0;
@@ -226,8 +224,8 @@ const loadOfferData = async () => {
     offerImageUrl.value = offer.image_offer ? offer.image_offer : null;
     offerWebsite.value = offer.web_offer || 'Sitio web no disponible';
     offerAddress.value = offer.address_offer || 'Dirección no disponible';
+    offerCompany.value = offer.company_name || 'Dirección no disponible';
   } catch (error) {
-    const toast = useToast();
     toast.error('Error al cargar los datos de la oferta');
   }
 };
@@ -294,6 +292,14 @@ const resetData = () => {
   offerAddress.value = '';
 };
 
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.success('¡Código copiado al portapapeles!');
+  } catch (error) {
+    toast.error('No se pudo copiar el código. Inténtalo de nuevo.');
+  }
+};
 // ------------------------
 // Manejo de Favoritos
 // ------------------------

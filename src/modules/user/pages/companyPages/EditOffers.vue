@@ -110,12 +110,15 @@
         />
       </div>
 
-      <!-- Botón de subir imagen que ocupa todo el ancho -->
-      <div class="flex flex-col space-y-2">
-        <button @click="triggerFileInput" class="btn btn-outline w-full">
-          {{ offerImageUrl ? 'Cambiar Imagen' : 'Subir Imagen' }}
+      <div class="flex mt-4 gap-2">
+        <button @click="triggerFileInput" class="btn btn-outline btn-secondary w-1/2">
+          Cambiar Imagen
         </button>
-        <button v-if="offerImageUrl" @click="removeImage" class="btn btn-error btn-outline w-full">
+        <button
+          :disabled="!offerImageUrl"
+          @click="removeImage"
+          class="btn btn-error btn-outline w-1/2"
+        >
           Eliminar Imagen
         </button>
       </div>
@@ -147,12 +150,14 @@
     </div>
 
     <!-- Botón para crear o actualizar oferta -->
-    <button @click="handleOfferAction" class="btn btn-primary mt-4 w-full">
-      {{ isEditMode ? 'Guardar Cambios' : 'Publicar Oferta' }}
-    </button>
-    <button v-if="isEditMode" @click="deleteOffer" class="btn btn-error mt-4 w-full">
-      Eliminar Oferta
-    </button>
+    <div class="flex mt-4 gap-2">
+      <button @click="handleOfferAction" class="btn btn-info w-1/2">
+        {{ isEditMode ? 'Guardar Cambios' : 'Publicar Oferta' }}
+      </button>
+      <button v-if="isEditMode" @click="deleteOffer" class="btn btn-error w-1/2">
+        Eliminar Oferta
+      </button>
+    </div>
   </section>
 </template>
 
