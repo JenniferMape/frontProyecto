@@ -4,9 +4,8 @@
     <form class="card-body p-6 grid grid-cols-1 gap-2" @submit.prevent="registerUser">
       <h2 class="card-title text-lg mb-2 col-span-full text-neutral">¡Te estábamos esperando!</h2>
 
-  
-<!-- Checkbox para seleccionar cuenta de empresa -->
-<div class="form-control col-span-full">
+      <!-- Checkbox para seleccionar cuenta de empresa -->
+      <div class="form-control col-span-full">
         <label class="label cursor-pointer">
           <span class="label-text text-neutral">¿Va a ser una cuenta de empresa?</span>
           <input
@@ -43,7 +42,7 @@
           name="nombre"
           v-model="username"
           placeholder="Nombre de usuario"
-          validation="required|min:3|max:20"
+          validation="required|max:20"
           class="input input-bordered"
         />
       </div>
@@ -113,7 +112,6 @@
 
 <script setup lang="ts">
 import { useRegisterForm } from '@/modules/auth/composables/useRegisterForm';
-
 
 const { typeUser, cif, username, email, password, password2, registerUser } = useRegisterForm();
 </script>
