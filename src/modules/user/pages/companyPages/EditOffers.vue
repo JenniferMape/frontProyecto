@@ -2,162 +2,151 @@
   <!-- Offer Form -->
   <section class="w-3/4 bg-base-100 shadow-md p-6 rounded-lg ml-6">
     <h2 class="font-bold text-xl mb-6">{{ isEditMode ? 'Editar Oferta' : 'Nueva Oferta' }}</h2>
-
-    <!-- Campos del formulario -->
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Título de la oferta</span>
-      </label>
-      <input
-        v-model="offerTitle"
-        type="text"
-        class="input input-bordered"
-        placeholder="Ej: Descuento en ropa"
-      />
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Categoría de la oferta</span>
-      </label>
-      <select v-model="offerCategory" class="select select-bordered">
-        <option disabled selected>Selecciona una categoría</option>
-        <option v-for="category in categories" :key="category.value" :value="category.value">
-          {{ category.label }}
-        </option>
-      </select>
-    </div>
-
-    <div class="flex gap-4 mb-4">
-      <div class="form-control">
+    <form @submit.prevent="handleOfferAction" class="card-body p-6 grid grid-cols-1 gap-4">
+      <!-- Campos del formulario -->
+      <div class="form-control mb-4">
         <label class="label">
-          <span class="label-text">Fecha de inicio</span>
+          <span class="label-text">Título de la oferta</span>
         </label>
-        <input v-model="startDate" type="date" class="input input-bordered" />
-      </div>
-
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Fecha de finalización</span>
-        </label>
-        <input v-model="endDate" type="date" class="input input-bordered" />
-      </div>
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Precio original</span>
-      </label>
-      <input
-        v-model="oldPrice"
-        type="number"
-        class="input input-bordered"
-        placeholder="Ej: 10.00€"
-        min="0"
-        step="0.10"
-      />
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Precio con descuento</span>
-      </label>
-      <input
-        v-model="newPrice"
-        type="number"
-        class="input input-bordered"
-        placeholder="Ej: 8.00€"
-        min="0"
-        step="0.10"
-      />
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Descripción de la oferta</span>
-      </label>
-      <textarea
-        v-model="offerDescription"
-        class="textarea textarea-bordered"
-        placeholder="Escribe una descripción detallada de la oferta"
-        rows="4"
-      ></textarea>
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Código de descuento</span>
-      </label>
-      <input
-        v-model="discountCode"
-        type="text"
-        class="input input-bordered"
-        placeholder="Ej: DESCUENTO10"
-      />
-    </div>
-
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Imagen de la oferta</span>
-      </label>
-
-      <!-- Contenedor centrado para la vista previa de la imagen -->
-      <div v-if="offerImageUrl" class="flex justify-center mb-4">
-        <img
-          :src="offerImageUrl"
-          alt="Vista previa de la imagen de la oferta"
-          class="w-40 h-40 object-cover rounded-md shadow-md"
+        <FormKit
+          v-model="offerTitle"
+          type="text"
+          name="title"
+          placeholder="Ej: Descuento en ropa"
+          validation="required"
         />
       </div>
 
-      <div class="flex mt-4 gap-2">
-        <button @click="triggerFileInput" class="btn btn-outline btn-secondary w-1/2">
-          Cambiar Imagen
-        </button>
-        <button
-          :disabled="!offerImageUrl"
-          @click="removeImage"
-          class="btn btn-error btn-outline w-1/2"
-        >
-          Eliminar Imagen
-        </button>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Categoría de la oferta</span>
+        </label>
+        <FormKit
+          v-model="offerCategory"
+          :options="categories"
+          type="select"
+          validation="required"
+          placeholder="Selecciona una categoría"
+        />
+      </div>
+      <FormKit type="group">
+      <div class="flex gap-4 mb-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Fecha de inicio</span>
+          </label>
+          <FormKit v-model="startDate" type="date" name="startDate" validation="required" />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Fecha de finalización</span>
+          </label>
+          <FormKit v-model="endDate" type="date" name="endDate"  validation="date_after_node:startDate" help="La fecha de fin debe ser posterior a la de inicio"  message=" 'La fecha de fin debe ser después de la fecha de inicio.'"/>
+        </div>
+      </div>
+    </FormKit>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Precio original</span>
+        </label>
+        <FormKit
+          v-model="oldPrice"
+          type="number"
+          placeholder="Ej: 10.00€"
+          min="0"
+          step="0.10"
+          validation="required"
+        />
       </div>
 
-      <!-- Input de archivo para subir la imagen -->
-      <input type="file" @change="handleImageChange" ref="offerImageInput" class="hidden" />
-    </div>
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Página web de la oferta</span>
-      </label>
-      <input
-        v-model="offerWebsite"
-        type="url"
-        class="input input-bordered"
-        placeholder="Ej: https://ejemplo.com"
-      />
-    </div>
-    <div class="form-control mb-4">
-      <label class="label">
-        <span class="label-text">Dirección de la oferta</span>
-      </label>
-      <input
-        v-model="offerAddress"
-        type="text"
-        class="input input-bordered"
-        placeholder="Ej: Calle Falsa 123"
-      />
-    </div>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Precio con descuento</span>
+        </label>
+        <FormKit
+          v-model="newPrice"
+          type="number"
+          placeholder="Ej: 8.00€"
+          min="0"
+          step="0.10"
+          validation="required"
+        />
+      </div>
 
-    <!-- Botón para crear o actualizar oferta -->
-    <div class="flex mt-4 gap-2">
-      <button @click="handleOfferAction" class="btn btn-info w-1/2">
-        {{ isEditMode ? 'Guardar Cambios' : 'Publicar Oferta' }}
-      </button>
-      <button v-if="isEditMode" @click="deleteOffer" class="btn btn-error w-1/2">
-        Eliminar Oferta
-      </button>
-    </div>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Descripción de la oferta</span>
+        </label>
+        <FormKit
+          v-model="offerDescription"
+          type="textarea"
+          placeholder="Escribe una descripción detallada de la oferta"
+          rows="4"
+          validation="required"
+        />
+      </div>
+
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Código de descuento</span>
+        </label>
+        <FormKit v-model="discountCode" type="text" placeholder="Ej: DESCUENTO10" />
+      </div>
+
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Imagen de la oferta</span>
+        </label>
+
+        <!-- Contenedor centrado para la vista previa de la imagen -->
+        <div v-if="offerImageUrl" class="flex justify-center mb-4">
+          <img
+            :src="offerImageUrl"
+            alt="Vista previa de la imagen de la oferta"
+            class="w-40 h-40 object-cover rounded-md shadow-md"
+          />
+        </div>
+
+        <div class="flex mt-4 gap-2">
+          <button @click="triggerFileInput" class="btn btn-outline btn-secondary w-1/2">
+            Cambiar Imagen
+          </button>
+          <button
+            :disabled="!offerImageUrl"
+            @click="removeImage"
+            class="btn btn-error btn-outline w-1/2"
+          >
+            Eliminar Imagen
+          </button>
+        </div>
+
+        <!-- Input de archivo para subir la imagen -->
+        <input type="file" @change="handleImageChange" ref="offerImageInput" class="hidden" />
+      </div>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Página web de la oferta</span>
+        </label>
+        <FormKit v-model="offerWebsite" type="url" placeholder="Ej: https://ejemplo.com" />
+      </div>
+      <div class="form-control mb-4">
+        <label class="label">
+          <span class="label-text">Dirección de la oferta</span>
+        </label>
+        <FormKit v-model="offerAddress" type="text" placeholder="Ej: Calle Falsa 123" />
+      </div>
+
+      <!-- Botón para crear o actualizar oferta -->
+      <div class="flex mt-4 gap-2">
+        <button type="submit" class="btn btn-info w-1/2">
+          {{ isEditMode ? 'Guardar Cambios' : 'Publicar Oferta' }}
+        </button>
+        <button v-if="isEditMode" @click="deleteOffer" class="btn btn-error w-1/2">
+          Eliminar Oferta
+        </button>
+      </div>
+    </form>
   </section>
 </template>
 
@@ -242,7 +231,7 @@ onMounted(() => {
   if (props.offerId) {
     loadOfferData(); // Carga los datos si estamos en modo edición
   } else {
-    resetForm(); // Reinicia los campos del formulario si no hay `offerId`
+    //resetForm(); // Reinicia los campos del formulario si no hay `offerId`
   }
 });
 onUnmounted(() => {

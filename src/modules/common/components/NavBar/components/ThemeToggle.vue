@@ -38,9 +38,10 @@ import { ref, watch } from 'vue';
 const darkTheme = ref(false);
 
 const toggleTheme = () => {
-  const theme = darkTheme.value ? 'darkTheme' : 'lightTheme';
+  const theme = darkTheme.value ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', theme);
 };
 
 watch(darkTheme, toggleTheme);
+
 </script>

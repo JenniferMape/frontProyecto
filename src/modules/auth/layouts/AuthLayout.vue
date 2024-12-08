@@ -2,8 +2,8 @@
   <!-- component -->
   <div class="bg-base-200 flex justify-center items-center h-screen">
     <!-- Image -->
-    <div class="w-1/2 h-screen hidden lg:block">
-      <img alt="CholloCuenca logo" class="w-full h-auto mr-2" src="@/assets/estampado.svg" />
+    <div class="w-1/2 h-screen hidden lg:block max-md:hidden ">
+      <img alt="CholloCuenca logo" class="w-full h-full object-cover" src="@/assets/estampado.svg" />
     </div>
 
     <!-- Login Form -->

@@ -11,7 +11,7 @@ export default {
   daisyui: {
     themes: [
       {
-        lightTheme: {
+        light: {
           primary: '#8CBA51',
           secondary: '#424242',
           accent: '#FBBF24',
@@ -22,10 +22,11 @@ export default {
           success: '#779b33',
           warning: '#FBBF24',
           error: '#EF4444',
+    
         },
       },
       {
-        darkTheme: {
+        dark: {
           primary: '#8CBA51',
           secondary: '#F5F5F5',
           accent: '#FBBF24',

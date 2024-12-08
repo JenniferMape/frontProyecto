@@ -139,6 +139,7 @@ import {
   removeAvatar,
   updateAvatar,
   changeCIF,
+  deleteAccount,
 } from '@/modules/user/composables/useProfile';
 
 const authStore = useAuthStore();
@@ -228,14 +229,10 @@ const saveChanges = async () => {
 const closeDeleteModal = () => {
   showDeleteModal.value = false;
 };
-const confirmDeleteAccount = async () => {
-  try {
-    await deleteAccount(id);
-    toast.success('Cuenta eliminada exitosamente.');
-    showDeleteModal.value = false;
-  } catch (error) {
-    toast.error('Error al eliminar la cuenta. Por favor, inténtalo de nuevo.');
-  }
+const confirmDeleteAccount = () => {
+  deleteAccount(id);
+
+  showDeleteModal.value = false;
 };
 const replaceAvatar = (event) => {
   const file = event.target.files[0];

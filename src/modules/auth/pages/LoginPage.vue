@@ -1,42 +1,50 @@
 <template>
   <!-- Formulario de Inicio de Sesión -->
   <div class="card bg-base-100 w-full shadow-2xl">
-    <form class="card-body p-6 grid grid-cols-1 gap-4" @submit.prevent="onLogin">
+    <form @submit.prevent="onLogin" class="card-body p-6 grid grid-cols-1 gap-4">
       <h2 class="card-title text-lg mb-2 col-span-full text-neutral">Si ya eres usuario:</h2>
+
+      <!-- Campo de Email -->
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-neutral">
+        <label class=" text-neutral">
           Email
-          <input
-            v-model="emailuser"
+          <FormKit
             type="email"
+            name="email"
+            prefix-icon="email"
+            v-model="emailuser"
             placeholder="ejemplo@ejemplo.com"
-            class="grow"
-            required
-            id="emailuser"
-            name="emailuser"
-            autocomplete="on"
+            validation-visibility="blur"
+            validation="required|email"
+          
           />
         </label>
       </div>
+
+      <!-- Campo de Contraseña -->
       <div class="form-control col-span-full">
-        <label class="input input-bordered flex items-center gap-2 text-neutral">
+        <label class="text-neutral">
           Password
-          <input
-            v-model="passworduser"
+          <FormKit
             type="password"
-            id="password"
-            name="password"
-            placeholder="min 8 caracteres"
+            name="contraseña"
+            prefix-icon="password"
+            v-model="passworduser"
+            placeholder="********"
+            help="min 8 caracteres"
+            validation="required|min:8"
             class="grow"
-            required
-            autocomplete="off"
           />
         </label>
-        <!-- Forgot Password Link -->
+        <!-- Enlace para recuperar la contraseña -->
         <label class="label">
-          <a href="#" class="label-text-alt link link-hover">¿Olvidaste tu contraseña?</a>
+          <RouterLink class="hover:underline" :to="{ name: 'reset' }">
+        
+            <p  class="label-text-alt link link-hover">¿Olvidaste tu contraseña?</p>
+        </RouterLink>
         </label>
       </div>
+
       <!-- Botón de Inicio de Sesión -->
       <div class="form-control mt-6">
         <button class="btn btn-primary" type="submit">Inicia Sesión</button>
@@ -45,7 +53,7 @@
       <!-- Enlace para Registrarse -->
       <div class="mt-6 text-center">
         <RouterLink class="hover:underline" :to="{ name: 'register' }">
-          ¡Regístrate aqui!
+          ¡Regístrate aquí!
         </RouterLink>
       </div>
     </form>
@@ -55,7 +63,9 @@
 <script setup lang="ts">
 import { useLoginForm } from '@/modules/auth/composables/useLoginForm';
 import { RouterLink } from 'vue-router';
+import { FormKit } from '@formkit/vue';
 
-// // Desestructuramos las variables y funciones del composable
 const { emailuser, passworduser, onLogin, loading } = useLoginForm();
 </script>
+
+

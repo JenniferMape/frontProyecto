@@ -7,7 +7,6 @@ import { useAuthStore } from '@/modules/auth/stores/auth.store';
 import { RouterView } from 'vue-router';
 import { useRoute, useRouter } from 'vue-router';
 import { AuthStatus } from '@/modules/auth/interfaces/auth-status.enum';
-import FullScreenLoader from './modules/common/components/FullScreenLoader.vue';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 const authStore = useAuthStore();

@@ -80,7 +80,7 @@ const sendMessage = async () => {
 
   isLoading.value = true;
   try {
-    const response = await axios.post('/contact.php', {
+    const response = await axios.post('https://api.chollocuenca.site/contact', {
       email: email.value,
       message: message.value,
     });
