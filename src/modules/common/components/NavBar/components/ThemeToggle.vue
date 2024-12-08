@@ -1,6 +1,6 @@
 <!-- ThemeToggle.vue -->
 <template>
-  <label class="swap swap-rotate">
+  <label class="swap swap-rotate ml-3">
     <input
       type="checkbox"
       class="theme-controller"
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-const darkTheme = ref(false);
+const darkTheme = ref(true);
 
 const toggleTheme = () => {
   const theme = darkTheme.value ? 'dark' : 'light';
@@ -43,5 +43,4 @@ const toggleTheme = () => {
 };
 
 watch(darkTheme, toggleTheme);
-
 </script>

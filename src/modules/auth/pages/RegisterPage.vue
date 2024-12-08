@@ -42,7 +42,7 @@
           name="nombre"
           v-model="username"
           placeholder="Nombre de usuario"
-          validation="required|max:20"
+          validation="required"
           class="input input-bordered"
         />
       </div>
